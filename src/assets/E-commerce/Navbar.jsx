@@ -28,12 +28,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <Link to="/shop" className="text-black hover:text-blue-500">
               Shop
             </Link>
-            <Link to="/contact" className="text-black hover:text-blue-500">
-              Contact
-            </Link>
             <Link to="/reviews" className="text-black hover:text-blue-500">
               Reviews
             </Link>
+            <Link to="/contact" className="text-black hover:text-blue-500">
+              Contact
+            </Link>
+           
           </div>
 
          
@@ -88,12 +89,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <Link to="/shop" className="text-black hover:text-blue-500">
               Shop
             </Link>
-            <Link to="/contact" className="text-black hover:text-blue-500">
-              Contact
-            </Link>
             <Link to="/reviews" className="text-black hover:text-blue-500">
               Reviews
             </Link>
+            <Link to="/contact" className="text-black hover:text-blue-500">
+              Contact
+            </Link>
+           
           </div>
         </div>
       </div>
