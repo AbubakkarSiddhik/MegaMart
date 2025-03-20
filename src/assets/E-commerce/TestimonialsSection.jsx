@@ -2,31 +2,35 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import img1 from "./customer1.jpg"
+import img2 from "./customer2.jpg"
+import img3 from "./customer3.jpg"
+import img4 from "./customer4.jpg"
 
 const TestimonialsSection = () => {
   const testimonials = [
     {
       name: "John Doe",
       review: "Great products and fast delivery!",
-      image: "https://via.placeholder.com/100x100?text=John",
+      image: img1,
       rating: 5,
     },
     {
       name: "Jane Smith",
       review: "Love the quality and customer service!",
-      image: "https://via.placeholder.com/100x100?text=Jane",
+      image: img2,
       rating: 4,
     },
     {
       name: "Alice Johnson",
       review: "Amazing experience shopping here!",
-      image: "https://via.placeholder.com/100x100?text=Alice",
+      image: img3,
       rating: 5,
     },
     {
       name: "Bob Brown",
       review: "Highly recommended for fashion lovers!",
-      image: "https://via.placeholder.com/100x100?text=Bob",
+      image: img4,
       rating: 4.5,
     },
   ];
@@ -82,10 +86,10 @@ const TestimonialsSection = () => {
               <img
                 src={testimonial.image}
                 alt={testimonial.name}
-                className="w-16 h-16 rounded-full mx-auto mb-4"
+                className="w-20 h-20 rounded-full mx-auto mb-4"
               />
               <StarRating rating={testimonial.rating} />
-              <p className="text-gray-600 mt-4">"{testimonial.review}"</p>
+              <p className="text-gray-600 mt-4">{testimonial.review}</p>
               <p className="font-semibold mt-4">- {testimonial.name}</p>
             </div>
           </div>
