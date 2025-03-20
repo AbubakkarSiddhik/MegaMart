@@ -91,6 +91,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <Link to="/contact" className="text-black hover:text-blue-500">
               Contact
             </Link>
+            <Link to="/reviews" className="text-black hover:text-blue-500">
+              Reviews
+            </Link>
           </div>
         </div>
       </div>
