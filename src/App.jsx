@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 // import { Button, TextField, Card, CardContent, Typography } from "@mui/material";
 // import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc } from "firebase/firestore";
 // import MyContext from './MyContext';
