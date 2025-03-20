@@ -1,10 +1,11 @@
 import React from "react";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material"; // Import social media icons
-
+import NewsletterSection from "./NewsletterSection";
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-12">
       <div className="container mx-auto px-6">
+        <NewsletterSection /> 
         <div className="grid grid-cols-1  md:grid-cols-3 gap-8">
          
           <div>
