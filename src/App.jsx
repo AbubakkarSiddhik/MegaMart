@@ -22,6 +22,8 @@ import Footer from "./assets/E-commerce/Footer";
 import WhatsAppButton from "./assets/E-commerce/WhatsAppButton";
 
 
+
+
 function App() {
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [products, setProducts] = useState([
@@ -49,6 +51,7 @@ function App() {
               element={
                 <>
                   <HeroSection />
+                  
                   
                   <Categories />
                 
