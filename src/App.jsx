@@ -9,6 +9,7 @@ import Navbar from "./assets/E-commerce/Navbar";
 import HeroSection from "./assets/E-commerce/HeroSection";
 import Shop from "./assets/E-commerce/Shop";
 import ContactPage from "./assets/E-commerce/ContactPage";
+import TestimonialsSection from "./assets/E-commerce/TestimonialsSection";
 import AccountPage from "./assets/E-commerce/AccountPage";
 import Categories from "./assets/E-commerce/Categories";
 import ProductList from "./assets/E-commerce/ProductList";
@@ -19,6 +20,7 @@ import CheckoutForm from "./assets/E-commerce/CheckoutForm";
 import OrderConfirmation from "./assets/E-commerce/OrderConfirmation";
 import Footer from "./assets/E-commerce/Footer";
 import WhatsAppButton from "./assets/E-commerce/WhatsAppButton";
+
 
 function App() {
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -61,6 +63,8 @@ function App() {
 
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/account" element={<AccountPage />} />
+         <Route path="/reviews" element={ <TestimonialsSection />} /> 
+           
             <Route path="/cart/page" element={<CartPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkoutform" element={<CheckoutForm />} />
@@ -176,5 +180,7 @@ function App() {
     </>
   );
 }
+
+
 
 export default App;
