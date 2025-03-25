@@ -22,7 +22,7 @@ import Footer from "./assets/E-commerce/Footer";
 import WhatsAppButton from "./assets/E-commerce/WhatsAppButton";
 import AboutUsPage from "./assets/E-commerce/AboutUsPage ";
 import Men from "./assets/E-commerce/men";
-import Women from "./assets/E-commerce/women";
+import Women from "./assets/E-commerce/Women";
 import Accessories from "./assets/E-commerce/Accessories";
 import Footwear from "./assets/E-commerce/Footwear";
 import ReviewsPage from "./assets/E-commerce/ReviewsPage";
