@@ -38,7 +38,7 @@ const ProductList = () => {
   };
 
   return (
-    <section className="px-6 py-12">
+    <section className="px-6 py-12 bg-gradient-to-r from-blue-50 to-purple-50">
       <h2 className="text-3xl font-bold text-center mb-6">Shop Our Products</h2>
 
    
