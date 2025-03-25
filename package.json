@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.4",
-    "@react-spring/web": "^9.7.5",
     "@tailwindcss/vite": "^4.0.6",
     "firebase": "^11.4.0",
     "framer-motion": "^12.5.0",
