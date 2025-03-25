@@ -9,7 +9,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
+    <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50 p-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
          
@@ -21,9 +21,12 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
           
 
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-6  font-semibold text-lg">
             <Link to="/" className="text-black hover:text-blue-500">
               Home
+            </Link>
+            <Link to="/about" className="text-black hover:text-blue-500">
+            About
             </Link>
             <Link to="/shop" className="text-black hover:text-blue-500">
               Shop
@@ -82,9 +85,12 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           /> */}
-          <div className="flex flex-col items-center p-4 space-y-5">
+          <div className="flex flex-col  items-center p-4 space-y-5 font-semibold  ">
             <Link to="/" className="text-black hover:text-blue-500">
               Home
+            </Link>
+            <Link to="/about" className="text-black hover:text-blue-500">
+            About
             </Link>
             <Link to="/shop" className="text-black hover:text-blue-500">
               Shop
