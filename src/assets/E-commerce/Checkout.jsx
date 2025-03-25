@@ -9,7 +9,7 @@ const CartPage = () => {
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 bg-gradient-to-r from-blue-50 to-purple-50">
       <h2 className="text-2xl font-bold mb-4">Your Cart 🛒</h2>
 
       {cart.length === 0 ? (
