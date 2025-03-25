@@ -121,7 +121,7 @@ const products = [
 
   { id: 17, name: "Brown Leather Jacket", price: 79.99, image: p17 },
   { id: 18, name: "Black Formal Suit (Women)", price: 139.99, image: p18 },
-  { id: 19, name: "Black Blazer (Women)", price: 159.99, image: p19 },
+  { id: 19, name: "Black Blazer", price: 159.99, image: p19 },
   { id: 20, name: "Grey Blazer (Women)", price: 89.99, image: p20 },
   { id: 21, name: "Brown Blazer (Women)", price: 39.99, image: p21 },
   { id: 22, name: "Beige Blazer (Women)", price: 109.99, image: p22 },
@@ -131,7 +131,7 @@ const products = [
   { id: 26, name: "Blue Formal Suit", price: 99.99, image: p26 },
   { id: 27, name: "Black Formal Suit", price: 129.99, image: p27 },
   { id: 28, name: "Navy Blue Formal Suit", price: 89.99, image: p28 },
-  // Exclude id: 29
+ 
   { id: 30, name: "Black Cargo Pants", price: 69.99, image: p30 },
   { id: 31, name: "Beige Cargo Pants", price: 29.99, image: p31 },
   { id: 32, name: "Khaki Cargo Pants", price: 49.99, image: p32 },
