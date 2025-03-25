@@ -6,7 +6,7 @@ const HeroSection = () => {
 
   return (
     <section
-      className="relative w-full h-[500px] flex items-center justify-center bg-cover bg-center"
+      className="relative w-full h-[500px] flex items-center justify-center bg-cover bg-center bg-gradient-to-r from-blue-50 to-purple-50"
       style={{ backgroundImage: `url(${HeroImage})` }} 
     >
       
