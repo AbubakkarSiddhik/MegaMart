@@ -20,12 +20,19 @@ import CheckoutForm from "./assets/E-commerce/CheckoutForm";
 import OrderConfirmation from "./assets/E-commerce/OrderConfirmation";
 import Footer from "./assets/E-commerce/Footer";
 import WhatsAppButton from "./assets/E-commerce/WhatsAppButton";
+import AboutUsPage from "./assets/E-commerce/AboutUsPage ";
+import Men from "./assets/E-commerce/men";
+import Women from "./assets/E-commerce/women";
+import Accessories from "./assets/E-commerce/Accessories";
+import Footwear from "./assets/E-commerce/Footwear";
+import ReviewsPage from "./assets/E-commerce/ReviewsPage";
+
 
 
 
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [products, setProducts] = useState([
     // { id: 1, name: "Laptop", price: 1200 },
     // { id: 2, name: "Smartphone", price: 800 },
@@ -42,7 +49,7 @@ function App() {
   return (
     <>
       <Router>
-        {/* Pass searchQuery and setSearchQuery to Navbar */}
+       
         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <div className="mt-20">
           <Routes>
@@ -54,6 +61,7 @@ function App() {
                   
                   
                   <Categories />
+               
                 
                   <ProductList products={filteredProducts} searchQuery={searchQuery} />
                 </>
@@ -61,6 +69,8 @@ function App() {
             />
 
             <Route path="/shop" element={<Shop />} />
+            <Route path="/about" element={<AboutUsPage />} />
+
 
             <Route path="/cart" element={<Cart />} />
 
@@ -72,11 +82,18 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkoutform" element={<CheckoutForm />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
+            <Route path="/reviewspage" element={<ReviewsPage />} />
+            <Route path="/men" element={<Men />} />
+            <Route path="/women" element={<Women />} />
+            <Route path="/accessories" element={<Accessories />} />
+            <Route path="/Footwear" element={<Footwear />} />
+
           </Routes>
         </div>
         <WhatsAppButton />
+        <Footer />
       </Router>
-      <Footer />
+     
 
       {/* <MyContext.Provider value={user}>
         <Profile />
