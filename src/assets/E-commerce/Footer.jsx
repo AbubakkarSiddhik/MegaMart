@@ -1,6 +1,7 @@
 import React from "react";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material"; // Import social media icons
 import NewsletterSection from "./NewsletterSection";
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-12">
@@ -12,24 +13,34 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/" className="hover:text-blue-400 transition-colors">
+                <Link to="/" className="hover:text-blue-400 transition-colors">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/shop" className="hover:text-blue-400 transition-colors">
+                <Link to="/about" className="hover:text-blue-400 transition-colors">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop" className="hover:text-blue-400 transition-colors">
                   Shop
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/cart" className="hover:text-blue-400 transition-colors">
+                <Link to="/cart" className="hover:text-blue-400 transition-colors">
                   Cart
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/contact" className="hover:text-blue-400 transition-colors">
+                <Link to="/reviews" className="hover:text-blue-400 transition-colors">
+                  Reviews
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-blue-400 transition-colors">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -48,38 +59,38 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
-              <a
-                href="https://facebook.com"
+              <Link
+                to="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-400 transition-colors"
               >
                 <Facebook fontSize="large" />
-              </a>
-              <a
-                href="https://twitter.com"
+              </Link>
+              <Link
+                to="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-400 transition-colors"
               >
                 <Twitter fontSize="large" />
-              </a>
-              <a
-                href="https://instagram.com"
+              </Link>
+              <Link
+                to="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-400 transition-colors"
               >
                 <Instagram fontSize="large" />
-              </a>
-              <a
-                href="https://linkedin.com"
+              </Link>
+              <Link
+                to="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-400 transition-colors"
               >
                 <LinkedIn fontSize="large" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
