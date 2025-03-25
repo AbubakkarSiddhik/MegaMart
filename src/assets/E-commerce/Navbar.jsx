@@ -12,21 +12,18 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50 p-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-         
           <img
             src={Logo}
             alt="MegaMart Logo"
             className="h-15 w-auto rounded-lg"
           />
 
-          
-
-          <div className="hidden md:flex space-x-6  font-semibold text-lg">
+          <div className="hidden md:flex space-x-6 font-semibold text-lg">
             <Link to="/" className="text-black hover:text-blue-500">
               Home
             </Link>
             <Link to="/about" className="text-black hover:text-blue-500">
-            About
+              About
             </Link>
             <Link to="/shop" className="text-black hover:text-blue-500">
               Shop
@@ -37,10 +34,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <Link to="/contact" className="text-black hover:text-blue-500">
               Contact
             </Link>
-           
           </div>
 
-         
           <div className="flex items-center space-x-4 md:pl-5">
             <Link to="/cart" className="relative cursor-pointer">
               <ShoppingCart
@@ -72,11 +67,11 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
           </div>
         </div>
 
-     
+        {/* Mobile Menu */}
         <div
-          className={`md:hidden bg-white transition-all duration-300 ${
-            menuOpen ? "max-h-60 py-2" : "max-h-0 overflow-hidden"
-          }`}
+          className={`md:hidden bg-white transition-all duration-300 ease-in-out ${
+            menuOpen ? "max-h-96 opacity-100 py-2" : "max-h-0 opacity-0"
+          } overflow-hidden`}
         >
           {/* <input
             type="text"
@@ -85,12 +80,16 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           /> */}
-          <div className="flex flex-col  items-center p-4 space-y-5 font-semibold  ">
+          <div
+            className={`flex flex-col items-center p-4 space-y-5 font-semibold ${
+              menuOpen ? "visible" : "invisible"
+            }`}
+          >
             <Link to="/" className="text-black hover:text-blue-500">
               Home
             </Link>
             <Link to="/about" className="text-black hover:text-blue-500">
-            About
+              About
             </Link>
             <Link to="/shop" className="text-black hover:text-blue-500">
               Shop
@@ -101,7 +100,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <Link to="/contact" className="text-black hover:text-blue-500">
               Contact
             </Link>
-           
           </div>
         </div>
       </div>
