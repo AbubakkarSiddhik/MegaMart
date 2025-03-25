@@ -31,7 +31,7 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 mt-20 bg-white shadow-lg rounded-lg">
+    <div className="max-w-lg mx-auto p-6 mt-20 bg-white shadow-lg rounded-lg bg-gradient-to-r from-blue-50 to-purple-50">
       <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
