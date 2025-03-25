@@ -19,7 +19,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
+    <div className="min-h-screen bg-gray-100 py-12 bg-gradient-to-r from-blue-50 to-purple-50">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-8">Contact Us</h2>
 
