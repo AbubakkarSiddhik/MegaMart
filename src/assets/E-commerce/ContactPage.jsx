@@ -36,7 +36,7 @@ const ContactPage = () => {
       <div className="container mx-auto px-4 sm:px-6 ">
         <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
           <ContactMailIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
-          <h2 className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+          <h2 className="text-4xl font-bold text-center ">
             Contact Us
           </h2>
         </Box>
