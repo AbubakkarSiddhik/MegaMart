@@ -31,32 +31,33 @@ import f24 from "../E-commerce/Footwear/f18.jpg";
 import f25 from "../E-commerce/Footwear/f19.jpg";
 
 const footwearProducts = [
-  { id: 1, name: "Cozy Pink Slippers", price: 29.99, image: f1, category: "casual" },
-  { id: 2, name: "Soft White Slides", price: 34.99, image: f2, category: "casual" },
-  { id: 3, name: "Beige Loafers", price: 59.99, image: f3, category: "loafers" },
-  { id: 4, name: "Perforated Slip-Ons", price: 49.99, image: f4, category: "casual" },
-  { id: 5, name: "Fur-Lined Moccasins", price: 69.99, image: f5, category: "casual" },
-  { id: 6, name: "Casual Grey Slip-Ons", price: 54.99, image: f6, category: "casual" },
-  { id: 7, name: "Trendy Pattern Sneakers", price: 79.99, image: f7, category: "sneakers" },
-  { id: 8, name: "Brown Leather Boots", price: 129.99, image: f8, category: "boots" },
-  { id: 9, name: "Classic Black Oxfords", price: 119.99, image: f9, category: "formal" },
-  { id: 10, name: "Light Brown Moccasins", price: 64.99, image: f10, category: "casual" },
-  { id: 11, name: "Tan Slip-On Loafers", price: 74.99, image: f11, category: "loafers" },
-  { id: 12, name: "Dark Brown Loafers", price: 79.99, image: f12, category: "loafers" },
-  { id: 13, name: "Vintage Heels", price: 89.99, image: f13, category: "heels" },
-  { id: 14, name: "Rust Orange Boots", price: 139.99, image: f14, category: "boots" },
-  { id: 15, name: "White Perforated Oxfords", price: 99.99, image: f15, category: "formal" },
-  { id: 16, name: "Grey High-Top Sneakers", price: 89.99, image: f16, category: "sneakers" },
-  { id: 17, name: "Pink High-Top Sneakers", price: 84.99, image: f17, category: "sneakers" },
-  { id: 18, name: "Elegant Black Boots", price: 149.99, image: f18, category: "boots" },
-  { id: 19, name: "Tan Leather Derby Shoes", price: 119.99, image: f19, category: "formal" },
-  { id: 20, name: "Shiny Black Formal Shoes", price: 129.99, image: f20, category: "formal" },
-  { id: 21, name: "Classic Leather Brogues", price: 139.99, image: f21, category: "formal" },
-  { id: 22, name: "Black and White Dress Shoes", price: 119.99, image: f22, category: "formal" },
-  { id: 23, name: "Brown Leather Shoes", price: 109.99, image: f23, category: "formal" },
-  { id: 24, name: "White Derby Shoes", price: 99.99, image: f24, category: "formal" },
-  { id: 25, name: "Polished Brown Formal Shoes", price: 129.99, image: f25, category: "formal" }
+  { id: 1, name: "Cozy Pink Slippers", price: 2499, image: f1, category: "casual" },
+  { id: 2, name: "Soft White Slides", price: 2949, image: f2, category: "casual" },
+  { id: 3, name: "Beige Loafers", price: 4999, image: f3, category: "loafers" },
+  { id: 4, name: "Perforated Slip-Ons", price: 4199, image: f4, category: "casual" },
+  { id: 5, name: "Fur-Lined Moccasins", price: 5849, image: f5, category: "casual" },
+  { id: 6, name: "Casual Grey Slip-Ons", price: 4599, image: f6, category: "casual" },
+  { id: 7, name: "Trendy Pattern Sneakers", price: 6699, image: f7, category: "sneakers" },
+  { id: 8, name: "Brown Leather Boots", price: 10999, image: f8, category: "boots" },
+  { id: 9, name: "Classic Black Oxfords", price: 10099, image: f9, category: "formal" },
+  { id: 10, name: "Light Brown Moccasins", price: 5449, image: f10, category: "casual" },
+  { id: 11, name: "Tan Slip-On Loafers", price: 6299, image: f11, category: "loafers" },
+  { id: 12, name: "Dark Brown Loafers", price: 6699, image: f12, category: "loafers" },
+  { id: 13, name: "Vintage Heels", price: 7549, image: f13, category: "heels" },
+  { id: 14, name: "Rust Orange Boots", price: 11799, image: f14, category: "boots" },
+  { id: 15, name: "White Perforated Oxfords", price: 8399, image: f15, category: "formal" },
+  { id: 16, name: "Grey High-Top Sneakers", price: 7549, image: f16, category: "sneakers" },
+  { id: 17, name: "Pink High-Top Sneakers", price: 7099, image: f17, category: "sneakers" },
+  { id: 18, name: "Elegant Black Boots", price: 12599, image: f18, category: "boots" },
+  { id: 19, name: "Tan Leather Derby Shoes", price: 10099, image: f19, category: "formal" },
+  { id: 20, name: "Shiny Black Formal Shoes", price: 10999, image: f20, category: "formal" },
+  { id: 21, name: "Classic Leather Brogues", price: 11799, image: f21, category: "formal" },
+  { id: 22, name: "Black and White Dress Shoes", price: 10099, image: f22, category: "formal" },
+  { id: 23, name: "Brown Leather Shoes", price: 9249, image: f23, category: "formal" },
+  { id: 24, name: "White Derby Shoes", price: 8399, image: f24, category: "formal" },
+  { id: 25, name: "Polished Brown Formal Shoes", price: 10999, image: f25, category: "formal" }
 ];
+
 
 const Footwear = () => {
   const { addToCart } = useCart();
@@ -143,7 +144,7 @@ const Footwear = () => {
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                  <p className="text-gray-600 mb-4 mt-auto">${product.price.toFixed(2)}</p>
+                  <p className="text-gray-600 mb-4 mt-auto">₹{product.price}</p>
 
                  
                   <Button
