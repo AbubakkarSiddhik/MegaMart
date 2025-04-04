@@ -47,46 +47,47 @@ import m39 from "../E-commerce/Men/m39.jpg";
 
 
 const menProducts = [
-    { id: 1, name: "Beige Hoodie", price: 49.99, image: m1, category: "hoodies" },
-    { id: 2, name: "Black Hoodie", price: 59.99, image: m2, category: "hoodies" },
-    { id: 3, name: "Denim Jacket", price: 79.99, image: m3, category: "jackets" },
-    { id: 4, name: "Brown Leather Jacket", price: 129.99, image: m4, category: "jackets" },
-    { id: 5, name: "White Suit", price: 199.99, image: m5, category: "suits" },
-    { id: 6, name: "Formal Suit Set", price: 249.99, image: m6, category: "suits" },
-    { id: 7, name: "Classic Grey Suit", price: 219.99, image: m7, category: "suits" },
-    { id: 8, name: "Blue Formal Suit", price: 209.99, image: m8, category: "suits" },
-    { id: 9, name: "Black Slim Fit Suit", price: 229.99, image: m9, category: "suits" },
-    { id: 10, name: "Navy Blue Suit", price: 239.99, image: m10, category: "suits" },
-    { id: 11, name: "Casual Joggers", price: 59.99, image: m11, category: "pants" },
-    { id: 12, name: "Beige Cargo Pants", price: 69.99, image: m12, category: "pants" },
-    { id: 13, name: "Casual Chino Pants", price: 64.99, image: m13, category: "pants" },
-    { id: 14, name: "Dark Brown Cargo Pants", price: 74.99, image: m14, category: "pants" },
-    { id: 15, name: "Light Beige Cargo Pants", price: 79.99, image: m15, category: "pants" },
-    { id: 16, name: "Summer Casual Outfit", price: 89.99, image: m16, category: "casual wear" },
-    { id: 17, name: "Khaki Pants with Red Shirt", price: 54.99, image: m17, category: "pants" },
-    { id: 18, name: "Brown Jacket with Beige Pants", price: 109.99, image: m18, category: "jackets" },
-    { id: 19, name: "Black Bomber Jacket", price: 99.99, image: m19, category: "jackets" },
-  { id: 20, name: "Casual Varsity Jacket", price: 89.99, image: m20, category: "jackets" },
-  { id: 21, name: "Black Leather Jacket", price: 129.99, image: m21, category: "jackets" },
-  { id: 22, name: "Black Joggers", price: 49.99, image: m22, category: "pants" },
-  { id: 23, name: "Dark Green Joggers", price: 54.99, image: m23, category: "pants" },
-  { id: 24, name: "Gray Joggers", price: 52.99, image: m24, category: "pants" },
-  { id: 25, name: "Striped Black Track Pants", price: 44.99, image: m25, category: "activewear" },
-  { id: 26, name: "Red Running Track Pants", price: 42.99, image: m26, category: "activewear" },
-  { id: 27, name: "Casual Running Sweatpants", price: 47.99, image: m27, category: "activewear" },
-  { id: 28, name: "Navy Blue Polo Shirt", price: 39.99, image: m28, category: "shirts" },
-  { id: 29, name: "Blue Checkered Shirt", price: 49.99, image: m29, category: "shirts" },
-  { id: 30, name: "White Formal Shirt", price: 59.99, image: m30, category: "shirts" },
-  { id: 31, name: "Lavender Dress Shirt", price: 54.99, image: m31, category: "shirts" },
-  { id: 32, name: "Purple Shirt with Tie", price: 64.99, image: m32, category: "shirts" },
-  { id: 33, name: "White Office Shirt", price: 55.99, image: m33, category: "shirts" },
-  { id: 34, name: "Light Gray Blazer Suit", price: 199.99, image: m34, category: "suits" },
-  { id: 35, name: "Brown Three-Piece Suit", price: 249.99, image: m35, category: "suits" },
-  { id: 36, name: "Navy Blue Three-Piece Suit", price: 259.99, image: m36, category: "suits" },
-  { id: 37, name: "Navy Blue Three-Piece Suit", price: 269.99, image: m37, category: "suits" },
-  { id: 38, name: "Rust Brown Slim-Fit Suit", price: 259.99, image: m38, category: "suits" },
-  { id: 39, name: "Charcoal Gray Business Suit", price: 239.99, image: m39, category: "suits" }
-  ];
+  { id: 1, name: "Beige Hoodie", price: 4150, image: m1, category: "hoodies" },
+  { id: 2, name: "Black Hoodie", price: 4970, image: m2, category: "hoodies" },
+  { id: 3, name: "Denim Jacket", price: 6640, image: m3, category: "jackets" },
+  { id: 4, name: "Brown Leather Jacket", price: 10790, image: m4, category: "jackets" },
+  { id: 5, name: "White Suit", price: 16600, image: m5, category: "suits" },
+  { id: 6, name: "Formal Suit Set", price: 20750, image: m6, category: "suits" },
+  { id: 7, name: "Classic Grey Suit", price: 18250, image: m7, category: "suits" },
+  { id: 8, name: "Blue Formal Suit", price: 17430, image: m8, category: "suits" },
+  { id: 9, name: "Black Slim Fit Suit", price: 19090, image: m9, category: "suits" },
+  { id: 10, name: "Navy Blue Suit", price: 19920, image: m10, category: "suits" },
+  { id: 11, name: "Casual Joggers", price: 4970, image: m11, category: "pants" },
+  { id: 12, name: "Beige Cargo Pants", price: 5810, image: m12, category: "pants" },
+  { id: 13, name: "Casual Chino Pants", price: 5400, image: m13, category: "pants" },
+  { id: 14, name: "Dark Brown Cargo Pants", price: 6220, image: m14, category: "pants" },
+  { id: 15, name: "Light Beige Cargo Pants", price: 6640, image: m15, category: "pants" },
+  { id: 16, name: "Summer Casual Outfit", price: 7470, image: m16, category: "casual wear" },
+  { id: 17, name: "Khaki Pants with Red Shirt", price: 4560, image: m17, category: "pants" },
+  { id: 18, name: "Brown Jacket with Beige Pants", price: 9100, image: m18, category: "jackets" },
+  { id: 19, name: "Black Bomber Jacket", price: 8300, image: m19, category: "jackets" },
+  { id: 20, name: "Casual Varsity Jacket", price: 7470, image: m20, category: "jackets" },
+  { id: 21, name: "Black Leather Jacket", price: 10790, image: m21, category: "jackets" },
+  { id: 22, name: "Black Joggers", price: 4150, image: m22, category: "pants" },
+  { id: 23, name: "Dark Green Joggers", price: 4560, image: m23, category: "pants" },
+  { id: 24, name: "Gray Joggers", price: 4390, image: m24, category: "pants" },
+  { id: 25, name: "Striped Black Track Pants", price: 3730, image: m25, category: "activewear" },
+  { id: 26, name: "Red Running Track Pants", price: 3560, image: m26, category: "activewear" },
+  { id: 27, name: "Casual Running Sweatpants", price: 3970, image: m27, category: "activewear" },
+  { id: 28, name: "Navy Blue Polo Shirt", price: 3320, image: m28, category: "shirts" },
+  { id: 29, name: "Blue Checkered Shirt", price: 4150, image: m29, category: "shirts" },
+  { id: 30, name: "White Formal Shirt", price: 4970, image: m30, category: "shirts" },
+  { id: 31, name: "Lavender Dress Shirt", price: 4560, image: m31, category: "shirts" },
+  { id: 32, name: "Purple Shirt with Tie", price: 5400, image: m32, category: "shirts" },
+  { id: 33, name: "White Office Shirt", price: 4630, image: m33, category: "shirts" },
+  { id: 34, name: "Light Gray Blazer Suit", price: 16600, image: m34, category: "suits" },
+  { id: 35, name: "Brown Three-Piece Suit", price: 20750, image: m35, category: "suits" },
+  { id: 36, name: "Navy Blue Three-Piece Suit", price: 21580, image: m36, category: "suits" },
+  { id: 37, name: "Navy Blue Three-Piece Suit", price: 22390, image: m37, category: "suits" },
+  { id: 38, name: "Rust Brown Slim-Fit Suit", price: 21580, image: m38, category: "suits" },
+  { id: 39, name: "Charcoal Gray Business Suit", price: 19920, image: m39, category: "suits" }
+];
+
   
 
 const Men = () => {
@@ -173,7 +174,7 @@ const Men = () => {
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                  <p className="text-gray-600 mb-4 mt-auto">${product.price.toFixed(2)}</p>
+                  <p className="text-gray-600 mb-4 mt-auto">₹{product.price}</p>
 
                   <Button
                     variant="contained"
