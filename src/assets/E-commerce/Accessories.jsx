@@ -44,45 +44,46 @@ import a37 from "../E-commerce/Accessories/a37.jpeg";
 import a38 from "../E-commerce/Accessories/a38.jpeg";
 
 const accessoriesProducts = [
-  { id: 1, name: "Brown Leather Belt with Gold Buckle", price: 29.99, image: a1, category: "belts" },
-  { id: 2, name: "Black Leather Belt with Gold Buckle", price: 24.99, image: a2, category: "belts" },
-  { id: 3, name: "Brown Studded Western Belt", price: 59.99, image: a3, category: "belts" },
-  { id: 4, name: "Tan Perforated Leather Belt", price: 39.99, image: a4, category: "belts" },
-  { id: 5, name: "Dark Brown Belt with Gold Studded Buckle", price: 34.99, image: a5, category: "belts" },
-  { id: 6, name: "Black Leather Belt with Rhinestone Buckle", price: 89.99, image: a6, category: "belts" },
-  { id: 7, name: "Brown Leather Belt with Decorative Buckle", price: 45.99, image: a7, category: "belts" },
-  { id: 8, name: "Black and Brown Reversible Belt with Metal Buckle", price: 49.99, image: a8, category: "belts" },
-  { id: 9, name: "Classic Black Leather Belt with Silver Buckle", price: 29.99, image: a9, category: "belts" },
-  { id: 10, name: "Dark Brown Formal Belt with Silver Buckle", price: 19.99, image: a10, category: "belts" },
-  { id: 11, name: "Dark Brown Belt with Silver Rectangular Buckle", price: 35.99, image: a11, category: "belts" },
-  { id: 12, name: "Brown Leather Belt with Textured Silver Buckle", price: 42.99, image: a12, category: "belts" },
-  { id: 13, name: "Black Leather Belt with Wide Silver Buckle", price: 27.99, image: a13, category: "belts" },
-  { id: 14, name: "Black Leather Belt with Square Silver Buckle", price: 22.99, image: a14, category: "belts" },
-  { id: 15, name: "Two-Tone Brown Leather Belt with Gold Buckle", price: 31.99, image: a15, category: "belts" },
-  { id: 16, name: "Brown Leather Western Belt with Large Buckle", price: 39.99, image: a16, category: "belts" },
-  { id: 17, name: "Black Leather Belt with Sleek Silver Buckle", price: 29.99, image: a17, category: "belts" },
-  { id: 18, name: "Luxury Gold-Tone Chronograph Watch", price: 199.99, image: a18, category: "watches" },
-  { id: 19, name: "Classic Rose Gold Women's Watch", price: 179.99, image: a19, category: "watches" },
-  { id: 20, name: "Elegant Roman Numeral Rose Gold Watch", price: 189.99, image: a20, category: "watches" },
-  { id: 21, name: "Black and Gold Luxury Wristwatch", price: 159.99, image: a21, category: "watches" },
-  { id: 22, name: "Rose Gold Chronograph Watch with Diamond Bezel", price: 249.99, image: a22, category: "watches" },
-  { id: 23, name: "Minimalist Rose Gold Ladies Watch", price: 129.99, image: a23, category: "watches" },
-  { id: 24, name: "Two-Tone Rose Gold and Black Watch", price: 149.99, image: a24, category: "watches" },
-  { id: 25, name: "Black Leather Strap Watch with Gold Dial", price: 139.99, image: a25, category: "watches" },
-  { id: 26, name: "Stainless Steel Men's Watch with White Dial", price: 169.99, image: a26, category: "watches" },
-  { id: 27, name: "Gold and Black Chronograph Watch", price: 199.99, image: a27, category: "watches" },
-  { id: 28, name: "Luxury Black and Gold Wristwatch", price: 219.99, image: a28, category: "watches" },
-  { id: 29, name: "Vintage Black Chronograph Watch", price: 189.99, image: a29, category: "watches" },
-  { id: 30, name: "Luxe Gold and Black Sports Watch", price: 209.99, image: a30, category: "watches" },
-  { id: 31, name: "Sleek Black Chronograph Watch", price: 179.99, image: a31, category: "watches" },
-  { id: 32, name: "Black and Gold Luxury Sports Watch", price: 189.99, image: a32, category: "watches" },
-  { id: 33, name: "Black Dial Stainless Steel Watch", price: 199.99, image: a33, category: "watches" },
-  { id: 34, name: "Classic Black Leather Chronograph Watch", price: 169.99, image: a34, category: "watches" },
-  { id: 35, name: "Silver and Black Chronograph with Brown Leather Strap", price: 209.99, image: a35, category: "watches" },
-  { id: 36, name: "Elegant Blue Dial Leather Strap Watch", price: 159.99, image: a36, category: "watches" },
-  { id: 37, name: "Vintage Brown Leather Strap Watch", price: 189.99, image: a37, category: "watches" },
-  { id: 38, name: "Luxury Silver and Black Sports Watch", price: 219.99, image: a38, category: "watches" },
+  { id: 1, name: "Brown Leather Belt with Gold Buckle", price: 2499, image: a1, category: "belts" },
+  { id: 2, name: "Black Leather Belt with Gold Buckle", price: 2099, image: a2, category: "belts" },
+  { id: 3, name: "Brown Studded Western Belt", price: 4999, image: a3, category: "belts" },
+  { id: 4, name: "Tan Perforated Leather Belt", price: 3349, image: a4, category: "belts" },
+  { id: 5, name: "Dark Brown Belt with Gold Studded Buckle", price: 2949, image: a5, category: "belts" },
+  { id: 6, name: "Black Leather Belt with Rhinestone Buckle", price: 7549, image: a6, category: "belts" },
+  { id: 7, name: "Brown Leather Belt with Decorative Buckle", price: 3849, image: a7, category: "belts" },
+  { id: 8, name: "Black and Brown Reversible Belt with Metal Buckle", price: 4199, image: a8, category: "belts" },
+  { id: 9, name: "Classic Black Leather Belt with Silver Buckle", price: 2499, image: a9, category: "belts" },
+  { id: 10, name: "Dark Brown Formal Belt with Silver Buckle", price: 1699, image: a10, category: "belts" },
+  { id: 11, name: "Dark Brown Belt with Silver Rectangular Buckle", price: 3029, image: a11, category: "belts" },
+  { id: 12, name: "Brown Leather Belt with Textured Silver Buckle", price: 3619, image: a12, category: "belts" },
+  { id: 13, name: "Black Leather Belt with Wide Silver Buckle", price: 2349, image: a13, category: "belts" },
+  { id: 14, name: "Black Leather Belt with Square Silver Buckle", price: 1929, image: a14, category: "belts" },
+  { id: 15, name: "Two-Tone Brown Leather Belt with Gold Buckle", price: 2679, image: a15, category: "belts" },
+  { id: 16, name: "Brown Leather Western Belt with Large Buckle", price: 3349, image: a16, category: "belts" },
+  { id: 17, name: "Black Leather Belt with Sleek Silver Buckle", price: 2499, image: a17, category: "belts" },
+  { id: 18, name: "Luxury Gold-Tone Chronograph Watch", price: 16799, image: a18, category: "watches" },
+  { id: 19, name: "Classic Rose Gold Women's Watch", price: 15099, image: a19, category: "watches" },
+  { id: 20, name: "Elegant Roman Numeral Rose Gold Watch", price: 15999, image: a20, category: "watches" },
+  { id: 21, name: "Black and Gold Luxury Wristwatch", price: 13499, image: a21, category: "watches" },
+  { id: 22, name: "Rose Gold Chronograph Watch with Diamond Bezel", price: 20999, image: a22, category: "watches" },
+  { id: 23, name: "Minimalist Rose Gold Ladies Watch", price: 10999, image: a23, category: "watches" },
+  { id: 24, name: "Two-Tone Rose Gold and Black Watch", price: 12599, image: a24, category: "watches" },
+  { id: 25, name: "Black Leather Strap Watch with Gold Dial", price: 11799, image: a25, category: "watches" },
+  { id: 26, name: "Stainless Steel Men's Watch with White Dial", price: 14299, image: a26, category: "watches" },
+  { id: 27, name: "Gold and Black Chronograph Watch", price: 16799, image: a27, category: "watches" },
+  { id: 28, name: "Luxury Black and Gold Wristwatch", price: 18499, image: a28, category: "watches" },
+  { id: 29, name: "Vintage Black Chronograph Watch", price: 15999, image: a29, category: "watches" },
+  { id: 30, name: "Luxe Gold and Black Sports Watch", price: 17599, image: a30, category: "watches" },
+  { id: 31, name: "Sleek Black Chronograph Watch", price: 15099, image: a31, category: "watches" },
+  { id: 32, name: "Black and Gold Luxury Sports Watch", price: 15999, image: a32, category: "watches" },
+  { id: 33, name: "Black Dial Stainless Steel Watch", price: 16799, image: a33, category: "watches" },
+  { id: 34, name: "Classic Black Leather Chronograph Watch", price: 14299, image: a34, category: "watches" },
+  { id: 35, name: "Silver and Black Chronograph with Brown Leather Strap", price: 17599, image: a35, category: "watches" },
+  { id: 36, name: "Elegant Blue Dial Leather Strap Watch", price: 13499, image: a36, category: "watches" },
+  { id: 37, name: "Vintage Brown Leather Strap Watch", price: 15999, image: a37, category: "watches" },
+  { id: 38, name: "Luxury Silver and Black Sports Watch", price: 18499, image: a38, category: "watches" }
 ];
+
 
 const Accessories = () => {
   const { addToCart } = useCart();
@@ -169,7 +170,7 @@ const Accessories = () => {
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                  <p className="text-gray-600 mb-4 mt-auto">${product.price.toFixed(2)}</p>
+                  <p className="text-gray-600 mb-4 mt-auto">₹{product.price}</p>
 
                
                   <Button
