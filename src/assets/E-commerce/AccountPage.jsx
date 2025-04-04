@@ -3,14 +3,14 @@ import { Button, TextField, Typography, Tabs, Tab, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const AccountPage = () => {
-  const [tabValue, setTabValue] = useState(0); // 0 for Login, 1 for Sign Up
+  const [tabValue, setTabValue] = useState(0); 
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
+    <div className="bg-gray-100 py-12">
       <div className="container mx-auto px-6">
         <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
           <Typography variant="h4" className="text-center mb-6">
@@ -93,6 +93,14 @@ const AccountPage = () => {
                 />
                 <TextField
                   label="Password"
+                  type="password"
+                  fullWidth
+                  required
+                  className="mb-4"
+                  sx={{ marginBottom: 2 }} 
+                />
+                 <TextField
+                  label="Confirm Password"
                   type="password"
                   fullWidth
                   required
