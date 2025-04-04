@@ -24,21 +24,28 @@ const Categories = () => {
         {categories.map((category, index) => (
           <motion.div
             key={index}
-            // initial={{ opacity: 0, y: 30 }}
-            // animate={{ opacity: 1, y: 0 }}
-            // transition={{ duration: 0.5, delay: index * 0.1 }}
-            // whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0,0,0,0.15)" }}
-            className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center cursor-pointer transition-transform"
-            onClick={() => navigate(category.path)}
+            className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center cursor-pointer transition-transform hover:shadow-xl"
+            // whileHover={{ scale: 1.05 }}
+            // transition={{ duration: 0.3 }}
           >
             <motion.img
               src={category.image}
               alt={category.name}
-              className="w-50 h-50 object-cover rounded-full border-4 border-gray-200 shadow-md"
+              className="w-48 h-48 object-cover rounded-full border-4 border-gray-200 shadow-md"
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.3 }}
             />
             <h3 className="mt-4 text-lg font-semibold text-gray-700">{category.name}</h3>
+            
+            {/* View Button */}
+            <motion.button
+              onClick={() => navigate(category.path)}
+              className="mt-3 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition-all duration-300"
+             
+              
+            >
+              View Category
+            </motion.button>
           </motion.div>
         ))}
       </div>
