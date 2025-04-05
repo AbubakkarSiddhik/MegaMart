@@ -45,7 +45,7 @@ const AboutUsPage = () => {
     };
 
     return (
-        <div className="bg-white text-gray-800 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="bg-white text-gray-800 bg-gradient-to-r from-blue-50 to-purple-50 overflow-hidden">
            
             <section
                 className="relative h-[500px] md:h-[600px] flex items-center justify-center bg-cover bg-center"
