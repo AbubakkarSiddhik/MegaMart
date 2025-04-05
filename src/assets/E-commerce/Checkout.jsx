@@ -25,7 +25,7 @@ const CartPage = () => {
                
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold">{item.name}</h3>
-                  <p className="text-gray-700">${item.price.toFixed(2)}</p>
+                  <p className="text-gray-700">₹{item.price}</p>
                   <p className="text-gray-500">Quantity: {item.quantity}</p>
                 </div>
 
@@ -42,7 +42,7 @@ const CartPage = () => {
 
          
           <div className="mt-6 text-lg font-bold">
-            Total: <span className="text-blue-500">${totalPrice.toFixed(2)}</span>
+            Total: <span className="text-blue-500">₹{totalPrice.toFixed(2)}</span>
           </div>
 
           <button onClick={() => navigate("/checkoutform")} className="mt-4 w-full py-2 bg-green-500 text-white rounded-md text-lg hover:bg-green-600 transition">
