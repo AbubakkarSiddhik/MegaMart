@@ -10,7 +10,7 @@ const CartPage = () => {
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 bg-gradient-to-r from-blue-50 to-purple-50">
       <h2 className="text-2xl font-bold mb-4">Your Cart 🛒</h2>
 
       {cart.length === 0 ? (
@@ -26,7 +26,7 @@ const CartPage = () => {
                 
                 <div>
                   <h3 className="text-lg">{item.name}</h3>
-                  <p>${item.price.toFixed(2)}</p>
+                  <p>₹{item.price}</p>
                   <p className="text-gray-500">Quantity: {item.quantity}</p>
 
               
@@ -61,7 +61,7 @@ const CartPage = () => {
 
         
           <div className="mt-6 text-lg font-bold">
-            Total: <span className="text-blue-500">${totalPrice.toFixed(2)}</span>
+            Total: <span className="text-blue-500">₹{totalPrice}</span>
           </div>
 
           <Button
