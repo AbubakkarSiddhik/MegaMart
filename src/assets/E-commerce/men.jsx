@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { useCart } from "./CartContext";
-import { Button } from "@mui/material";
+import { Button, Chip, Rating, Badge } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import {
+  ShoppingCart,
+  Search,
+  FilterList,
+  FavoriteBorder,
+  LocalOffer,
+  Star,
+  CurrencyRupee
+} from "@mui/icons-material";
 
 import m1 from "../E-commerce/Men/m1.jpg";
 import m2 from "../E-commerce/Men/m2.jpg";
@@ -88,119 +96,244 @@ const menProducts = [
   { id: 39, name: "Charcoal Gray Business Suit", price: 19920, image: m39, category: "suits" }
 ];
 
-  
-
 const Men = () => {
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [sortOption, setSortOption] = useState("featured");
+  const [wishlist, setWishlist] = useState([]);
 
-  const filteredProducts = menProducts.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || product.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
-
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    toast.success(`${product.name} added to cart!`, {
-      position: "bottom-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  
+  // Get unique categories
   const categories = [...new Set(menProducts.map(product => product.category))];
 
+  // Filter and sort products
+  const filteredProducts = menProducts
+    .filter((product) => {
+      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = categoryFilter === "all" || product.category === categoryFilter;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      if (sortOption === "price-low-high") return a.price - b.price;
+      if (sortOption === "price-high-low") return b.price - a.price;
+      if (sortOption === "name-asc") return a.name.localeCompare(b.name);
+      if (sortOption === "name-desc") return b.name.localeCompare(a.name);
+      return 0; // Default/filtered order
+    });
+
+    const handleAddToCart = (product) => {
+      addToCart(product);
+      toast.success(`${product.name} added to cart!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        
+      });
+    };
+
+  const toggleWishlist = (productId) => {
+    setWishlist(prev =>
+      prev.includes(productId)
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
+  };
+
+  //random rating 
+  const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
+
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-8">Men's Collection</h2>
-
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <div className="w-full md:w-1/2">
-            <input
-              type="text"
-              placeholder="Search men's products..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          
-          <div className="w-full md:w-1/2 flex flex-wrap gap-2 justify-center">
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="container mx-auto px-4 sm:px-6">
+        {/* Page Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+            Men's Fashion Collection
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Discover premium quality clothing tailored for the modern man
+          </p>
         </div>
 
-     
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
-              >
-                
-                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                </div>
-
-               
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="mb-2">
-                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-                      {product.category}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                  <p className="text-gray-600 mb-4 mt-auto">₹{product.price}</p>
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={() => handleAddToCart(product)}
-                    sx={{ 
-                      bgcolor: "primary.main", 
-                      ":hover": { bgcolor: "primary.dark" },
-                      mt: 'auto'
-                    }}
-                  >
-                    Add to Cart
-                  </Button>
-                </div>
+        {/* Filters Section */}
+        <div className="bg-white p-4 rounded-lg shadow-md mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search Input */}
+            <div className="relative flex-grow">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="text-gray-400" />
               </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12">
-              <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
+              <input
+                type="text"
+                placeholder="Search men's products..."
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
-          )}
+
+            {/* Category Filter */}
+            <div className="relative w-full md:w-64">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FilterList className="text-gray-400" />
+              </div>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              >
+                <option value="all">All Categories</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort Filter */}
+            <div className="relative w-full md:w-64">
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="pl-4 pr-10 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low-high">Price: Low to High</option>
+                <option value="price-high-low">Price: High to Low</option>
+                <option value="name-asc">Name: A-Z</option>
+                <option value="name-desc">Name: Z-A</option>
+              </select>
+            </div>
+          </div>
         </div>
+
+        {/* Products Grid */}
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => {
+              const rating = getRandomRating();
+              const isNew = Math.random() > 0.7; // 30% chance to be "new"
+              const isOnSale = Math.random() > 0.8; // 20% chance to be on sale
+
+              return (
+                <div
+                  key={product.id}
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
+                >
+                  {/*  Img with Badges */}
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    
+                    {/* Wishlist Btn*/}
+                    <button
+                      onClick={() => toggleWishlist(product.id)}
+                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
+                        wishlist.includes(product.id)
+                          ? "text-red-500 bg-white/90"
+                          : "text-gray-400 bg-white/80 hover:text-red-500"
+                      }`}
+                    >
+                      <FavoriteBorder fontSize="small" />
+                    </button>
+                    
+                    {/* Badges */}
+                    {isNew && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        New
+                      </div>
+                    )}
+                    {isOnSale && (
+                      <div className="absolute top-10 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                        <LocalOffer fontSize="small" className="mr-1" />
+                        Sale
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <Chip
+                        label={product.category}
+                        size="small"
+                        className="text-xs capitalize"
+                      />
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center mb-2">
+                      <Rating
+                        value={parseFloat(rating)}
+                        precision={0.5}
+                        readOnly
+                        size="small"
+                        emptyIcon={<Star fontSize="inherit" style={{ opacity: 0.5 }} />}
+                      />
+                      <span className="text-xs text-gray-500 ml-1">
+                        ({rating})
+                      </span>
+                    </div>
+
+                    {/* Price */}
+                    <div className="flex items-center mb-3">
+                      <CurrencyRupee fontSize="small" color="primary" />
+                      <span className="text-lg font-bold text-gray-800 ml-0.5">
+                        {product.price.toLocaleString()}
+                      </span>
+                      {isOnSale && (
+                        <span className="ml-2 text-sm text-gray-500 line-through">
+                          ₹{(product.price * 1.2).toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Add to Cart Btn*/}
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<ShoppingCart />}
+                      onClick={() => handleAddToCart(product)}
+                      sx={{
+                        fontWeight: 'bold',
+                        py: 1,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-2px)'
+                        }
+                      }}
+                    >
+                      Add to Cart
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+            <Search className="mx-auto text-4xl text-gray-300 mb-4" />
+            <h3 className="text-xl font-medium text-gray-600">
+              No products found
+            </h3>
+            <p className="text-gray-500">
+              Try adjusting your search or filter criteria
+            </p>
+          </div>
+        )}
       </div>
 
-     
       <ToastContainer />
     </div>
   );
