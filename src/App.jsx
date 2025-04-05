@@ -13,9 +13,9 @@ import TestimonialsSection from "./assets/E-commerce/TestimonialsSection";
 import AccountPage from "./assets/E-commerce/AccountPage";
 import Categories from "./assets/E-commerce/Categories";
 import ProductList from "./assets/E-commerce/ProductList";
-import CartPage from "./assets/E-commerce/CartPage";
+// import CartPage from "./assets/E-commerce/CartPage";
 import Cart from "./assets/E-commerce/Cart";
-import Checkout from "./assets/E-commerce/Checkout";
+// import Checkout from "./assets/E-commerce/Checkout";
 import CheckoutForm from "./assets/E-commerce/CheckoutForm";
 import OrderConfirmation from "./assets/E-commerce/OrderConfirmation";
 import Footer from "./assets/E-commerce/Footer";
@@ -78,8 +78,8 @@ function App() {
             <Route path="/account" element={<AccountPage />} />
          <Route path="/reviews" element={ <TestimonialsSection />} /> 
            
-            <Route path="/cart/page" element={<CartPage />} />
-            <Route path="/checkout" element={<Checkout />} />
+            {/* <Route path="/cart/page" element={<CartPage />} /> */}
+            {/* <Route path="/checkout" element={<Checkout />} /> */}
             <Route path="/checkoutform" element={<CheckoutForm />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/reviewspage" element={<ReviewsPage />} />
