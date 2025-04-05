@@ -104,7 +104,7 @@ const CheckoutForm = () => {
         </div>
 
        
-        <h3 className="text-lg font-semibold mt-6">Total: ${totalPrice.toFixed(2)}</h3>
+        <h3 className="text-lg font-semibold mt-6">Total: ₹{totalPrice.toFixed(2)}</h3>
 
        
         <Button
