@@ -86,8 +86,8 @@ const ProductList = () => {
                 alt={product.name}
                 className="w-full h-40 object-cover rounded-md"
               />
-              <h3 className="mt-4 text-lg font-semibold">{product.name}</h3>
-              <p className="text-gray-600">${product.price.toFixed(2)}</p>
+              <h3 className="mt-4 text-xl font-semibold">{product.name}</h3>
+              <p className="text-gray-600 font-bold">₹{product.price}</p>
 
               <button
                 onClick={() => handleAddToCart(product)}
