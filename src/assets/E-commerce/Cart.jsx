@@ -3,12 +3,15 @@ import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import { FiShoppingCart, FiTrash2, FiPlus, FiMinus } from "react-icons/fi";
 import { FaArrowRight } from "react-icons/fa";
+import { Chip } from "@mui/material";
 
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, addToCart, decreaseQuantity, removeFromCart } = useCart();
 
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const tax = subtotal * 0.18; // 18% tax
+  const total = subtotal + tax;
 
   // Animation variants
   const cartItemVariants = {
@@ -35,6 +38,12 @@ const Cart = () => {
       <div className="flex items-center mb-8">
         <FiShoppingCart className="text-3xl text-purple-600 mr-3" />
         <h2 className="text-3xl font-bold text-gray-800">Your Shopping Cart</h2>
+        <Chip 
+          label={`${cart.length} items`} 
+          color="primary" 
+          className="ml-4" 
+          size="small"
+        />
       </div>
 
       {cart.length === 0 ? (
@@ -117,9 +126,13 @@ const Cart = () => {
           </AnimatePresence>
 
           <div className="mt-8 bg-white p-6 rounded-xl shadow-sm">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-3">
               <span className="text-lg font-medium text-gray-700">Subtotal:</span>
-              <span className="text-xl font-bold text-blue-600">₹{totalPrice.toLocaleString()}</span>
+              <span className="text-xl font-bold text-blue-600">₹{subtotal.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-lg font-medium text-gray-700">Tax (18%):</span>
+              <span className="text-xl font-bold text-orange-500">₹{tax.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center mb-6">
               <span className="text-lg font-medium text-gray-700">Shipping:</span>
@@ -128,14 +141,14 @@ const Cart = () => {
             <div className="border-t pt-4">
               <div className="flex justify-between items-center">
                 <span className="text-xl font-bold text-gray-800">Total:</span>
-                <span className="text-2xl font-bold text-purple-600">₹{totalPrice.toLocaleString()}</span>
+                <span className="text-2xl font-bold text-purple-600">₹{total.toLocaleString()}</span>
               </div>
             </div>
 
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => navigate("/checkout")}
+              onClick={() => navigate("/checkoutform")}
               className="mt-6 w-full py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg text-lg font-semibold hover:shadow-lg transition-all"
             >
               Proceed to Checkout
