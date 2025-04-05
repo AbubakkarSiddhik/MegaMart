@@ -1,76 +1,157 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
+import { FiShoppingCart, FiTrash2, FiPlus, FiMinus } from "react-icons/fi";
+import { FaArrowRight } from "react-icons/fa";
+
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, addToCart, decreaseQuantity, removeFromCart } = useCart();
 
-  
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  // Animation variants
+  const cartItemVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.3 }
+    },
+    exit: { 
+      opacity: 0, 
+      x: 50,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-md">
-      <h2 className="text-3xl font-bold mb-6">Your Cart 🛒</h2>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="max-w-4xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl shadow-lg"
+    >
+      <div className="flex items-center mb-8">
+        <FiShoppingCart className="text-3xl text-purple-600 mr-3" />
+        <h2 className="text-3xl font-bold text-gray-800">Your Shopping Cart</h2>
+      </div>
 
       {cart.length === 0 ? (
-        <p className="text-gray-500 text-lg">Your cart is empty.</p>
-        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-12"
+        >
+          <div className="text-5xl mb-4 text-gray-300">
+            <FiShoppingCart />
+          </div>
+          <p className="text-xl text-gray-500 mb-6">Your cart is empty</p>
+          <button
+            onClick={() => navigate("/shop")}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center mx-auto"
+          >
+            Continue Shopping
+            <FaArrowRight className="ml-2" />
+          </button>
+        </motion.div>
       ) : (
         <div>
-          {cart.map((item) => (
-            <div key={item.id} className="flex items-center justify-between border-b py-4">
-           
-              <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-md" />
-
-           
-              <div className="flex-1 ml-4">
-                <h3 className="text-lg font-semibold">{item.name}</h3>
-                <p className="text-gray-500">₹{item.price}</p>
-
-                
-                <div className="flex items-center mt-2">
-                  <button
-                    onClick={() => decreaseQuantity(item.id)}
-                    disabled={item.quantity === 1}
-                    className={`px-3 py-1 rounded-md ${
-                      item.quantity === 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                    }`}
-                  >
-                    -
-                  </button>
-                  <span className="mx-3">{item.quantity}</span>
-                  <button
-                    onClick={() => addToCart(item)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-            
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+          <AnimatePresence>
+            {cart.map((item) => (
+              <motion.div
+                key={item.id}
+                variants={cartItemVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                layout
+                className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm mb-4"
               >
-                Remove
-              </button>
+                <div className="flex items-center">
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="w-24 h-24 object-cover rounded-md border border-gray-200" 
+                  />
+
+                  <div className="ml-4">
+                    <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                    <p className="text-blue-600 font-medium">₹{item.price.toLocaleString()}</p>
+
+                    <div className="flex items-center mt-3">
+                      <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => decreaseQuantity(item.id)}
+                        disabled={item.quantity === 1}
+                        className={`p-2 rounded-md ${
+                          item.quantity === 1 
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
+                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                      >
+                        <FiMinus />
+                      </motion.button>
+                      <span className="mx-3 w-8 text-center font-medium">{item.quantity}</span>
+                      <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => addToCart(item)}
+                        className="p-2 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200"
+                      >
+                        <FiPlus />
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => removeFromCart(item.id)}
+                  className="p-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200"
+                >
+                  <FiTrash2 />
+                </motion.button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          <div className="mt-8 bg-white p-6 rounded-xl shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-lg font-medium text-gray-700">Subtotal:</span>
+              <span className="text-xl font-bold text-blue-600">₹{totalPrice.toLocaleString()}</span>
             </div>
-          ))}
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-lg font-medium text-gray-700">Shipping:</span>
+              <span className="text-xl font-bold text-green-600">FREE</span>
+            </div>
+            <div className="border-t pt-4">
+              <div className="flex justify-between items-center">
+                <span className="text-xl font-bold text-gray-800">Total:</span>
+                <span className="text-2xl font-bold text-purple-600">₹{totalPrice.toLocaleString()}</span>
+              </div>
+            </div>
 
-          
-          <div className="mt-6 text-xl font-bold">
-            Total: <span className="text-blue-500">₹{totalPrice}</span>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate("/checkout")}
+              className="mt-6 w-full py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg text-lg font-semibold hover:shadow-lg transition-all"
+            >
+              Proceed to Checkout
+              <FaArrowRight className="inline ml-2" />
+            </motion.button>
+
+            <button
+              onClick={() => navigate("/shop")}
+              className="mt-4 w-full py-2 text-blue-600 rounded-lg text-md font-medium hover:bg-blue-50 transition"
+            >
+              Continue Shopping
+            </button>
           </div>
-
-          
-          <button  onClick={() => navigate("/checkout")} className="mt-4 w-full py-2 bg-green-500 text-white rounded-md text-lg hover:bg-green-600 transition">
-            Checkout
-          </button>
-          
         </div>
-        
       )}
-    </div>
+    </motion.div>
   );
 };
 
