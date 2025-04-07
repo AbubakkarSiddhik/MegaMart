@@ -12,7 +12,7 @@ import {
   Star,
   CurrencyRupee
 } from "@mui/icons-material";
-import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 
 
 import m1 from "../E-commerce/Men/m1.jpg";
@@ -124,18 +124,18 @@ const Men = () => {
       return 0; // Default/filtered order
     });
 
-    const handleAddToCart = (product) => {
-      addToCart(product);
-      toast.success(`${product.name} added to cart!`, {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        
-      });
-    };
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+
+    });
+  };
 
   const toggleWishlist = (productId) => {
     setWishlist(prev =>
@@ -199,13 +199,13 @@ const Men = () => {
 
             {/* Sort Filter */}
             <div className="relative w-full md:w-64">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              {sortOrder === "high-low" ? (
-                <FaSortAmountUp className="text-gray-400" />
-              ) : (
-                <FaSortAmountDown className="text-gray-400" />
-              )}
-            </div>
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                {sortOrder === "high-low" ? (
+                  <FaSortAmountUp className="text-gray-400" />
+                ) : (
+                  <FaSortAmountDown className="text-gray-400" />
+                )}
+              </div>
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
@@ -242,19 +242,18 @@ const Men = () => {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    
+
                     {/* Wishlist Btn*/}
                     <button
                       onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
-                        wishlist.includes(product.id)
+                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${wishlist.includes(product.id)
                           ? "text-red-500 bg-white/90"
                           : "text-gray-400 bg-white/80 hover:text-red-500"
-                      }`}
+                        }`}
                     >
                       <FavoriteBorder fontSize="small" />
                     </button>
-                    
+
                     {/* Badges */}
                     {isNew && (
                       <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
