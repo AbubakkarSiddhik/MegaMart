@@ -151,7 +151,7 @@ const Accessories = () => {
   const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-amber-50 py-12">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
