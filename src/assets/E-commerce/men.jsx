@@ -6,13 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   ShoppingCart,
   Search,
-  Favorite,
   FilterList,
   FavoriteBorder,
   LocalOffer,
   Star,
-  CurrencyRupee,
-  Man
+  CurrencyRupee
 } from "@mui/icons-material";
 import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 
@@ -151,16 +149,13 @@ const Men = () => {
   const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
 
   return (
-    <div className="min-h-screen  bg-gradient-to-b from-blue-50 to-pink-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Page Header */}
         <div className="text-center mb-12">
-        <div className="flex items-center justify-center mb-4">
-         <Man className="text-4xl text-blue-500 mr-3" />
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
             Men's Fashion Collection
           </h1>
-          </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Discover premium quality clothing tailored for the modern man
           </p>
@@ -257,11 +252,7 @@ const Men = () => {
                           : "text-gray-400 bg-white/80 hover:text-red-500"
                       }`}
                     >
-                       {wishlist.includes(product.id) ? (
-                                              <Favorite fontSize="small" />
-                                            ) : (
-                                              <FavoriteBorder fontSize="small" />
-                                            )}
+                      <FavoriteBorder fontSize="small" />
                     </button>
                     
                     {/* Badges */}
