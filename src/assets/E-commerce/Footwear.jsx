@@ -17,6 +17,7 @@ import {
   SportsSoccer,
   MilitaryTech
 } from "@mui/icons-material";
+import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import f1 from "../E-commerce/Footwear/f1.jpg";
 import f2 from "../E-commerce/Footwear/f2.jpg";
 import f3 from "../E-commerce/Footwear/f3.jpg";
@@ -75,8 +76,9 @@ const footwearProducts = [
 const Footwear = () => {
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [sortOption, setSortOption] = useState("featured");
+  const [sortOption, setSortOption] = useState("");
   const [wishlist, setWishlist] = useState([]);
 
   // Category icons mapping
@@ -177,7 +179,7 @@ const Footwear = () => {
                 }
                 displayEmpty
               >
-                <MenuItem value="all">All Categories</MenuItem>
+                <MenuItem value="all">All </MenuItem>
                 {[...new Set(footwearProducts.map(p => p.category))].map((category) => (
                   <MenuItem key={category} value={category}>
                     <div className="flex items-center">
@@ -193,13 +195,21 @@ const Footwear = () => {
 
             {/* Sort Filter */}
             <div className="relative w-full md:w-64">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                 {sortOrder === "high-low" ? (
+                    <FaSortAmountUp className="text-gray-400" />
+                      ) : (
+                     <FaSortAmountDown className="text-gray-400" />
+                      )}
+                      </div>
               <Select
                 fullWidth
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
                 displayEmpty
+                className="pl-5 pr-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
               >
-                <MenuItem value="featured">Featured</MenuItem>
+                <MenuItem value="">Sort By</MenuItem>
                 <MenuItem value="price-low-high">Price: Low to High</MenuItem>
                 <MenuItem value="price-high-low">Price: High to Low</MenuItem>
                 <MenuItem value="name-asc">Name: A-Z</MenuItem>
