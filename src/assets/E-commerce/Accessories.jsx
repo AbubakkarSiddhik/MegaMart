@@ -18,7 +18,7 @@ import {
   Style, // For jewelry
   Checkroom // Alternative for belts
 } from "@mui/icons-material";
-
+import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import a1 from "../E-commerce/Accessories/a1.jpg";
 import a2 from "../E-commerce/Accessories/a2.jpg";
 import a3 from "../E-commerce/Accessories/a3.jpg";
@@ -103,7 +103,8 @@ const Accessories = () => {
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [sortOption, setSortOption] = useState("featured");
+  const [sortOrder, setSortOrder] = useState("");
+  const [sortOption, setSortOption] = useState("Sort By");
   const [wishlist, setWishlist] = useState([]);
 
   const categoryIcons = {
@@ -214,13 +215,22 @@ const Accessories = () => {
 
             {/* Sort Filter */}
             <div className="relative w-full md:w-64">
+               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                               {sortOrder === "high-low" ? (
+                                  <FaSortAmountUp className="text-gray-400" />
+                                    ) : (
+                                   <FaSortAmountDown className="text-gray-400" />
+                                    )}
+                                    </div>
               <Select
                 fullWidth
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
                 displayEmpty
+                className="pl-5 pr-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+
               >
-                <MenuItem value="featured">Featured</MenuItem>
+                <MenuItem value="Sort By">Sort By</MenuItem>
                 <MenuItem value="price-low-high">Price: Low to High</MenuItem>
                 <MenuItem value="price-high-low">Price: High to Low</MenuItem>
                 <MenuItem value="name-asc">Name: A-Z</MenuItem>
