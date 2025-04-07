@@ -18,7 +18,7 @@ import {
   Style, // For jewelry
   Checkroom // Alternative for belts
 } from "@mui/icons-material";
-import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import a1 from "../E-commerce/Accessories/a1.jpg";
 import a2 from "../E-commerce/Accessories/a2.jpg";
 import a3 from "../E-commerce/Accessories/a3.jpg";
@@ -128,18 +128,18 @@ const Accessories = () => {
       return 0;
     });
 
-    const handleAddToCart = (product) => {
-      addToCart(product);
-      toast.success(`${product.name} added to cart!`, {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        
-      });
-    };
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+
+    });
+  };
   const toggleWishlist = (productId) => {
     setWishlist(prev =>
       prev.includes(productId)
@@ -215,13 +215,13 @@ const Accessories = () => {
 
             {/* Sort Filter */}
             <div className="relative w-full md:w-64">
-               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                               {sortOrder === "high-low" ? (
-                                  <FaSortAmountUp className="text-gray-400" />
-                                    ) : (
-                                   <FaSortAmountDown className="text-gray-400" />
-                                    )}
-                                    </div>
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                {sortOrder === "high-low" ? (
+                  <FaSortAmountUp className="text-gray-400" />
+                ) : (
+                  <FaSortAmountDown className="text-gray-400" />
+                )}
+              </div>
               <Select
                 fullWidth
                 value={sortOption}
@@ -261,15 +261,14 @@ const Accessories = () => {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    
+
                     {/* Wishlist Btn */}
                     <button
                       onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
-                        wishlist.includes(product.id)
+                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${wishlist.includes(product.id)
                           ? "text-red-500 bg-white/90"
                           : "text-gray-400 bg-white/80 hover:text-red-500"
-                      }`}
+                        }`}
                     >
                       {wishlist.includes(product.id) ? (
                         <Favorite fontSize="small" />
@@ -277,7 +276,7 @@ const Accessories = () => {
                         <FavoriteBorder fontSize="small" />
                       )}
                     </button>
-                    
+
                     {/* Badges */}
                     {isNew && (
                       <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
