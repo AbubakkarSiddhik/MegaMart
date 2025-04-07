@@ -14,7 +14,7 @@ import {
   CurrencyRupee,
   Woman
 } from "@mui/icons-material";
-
+import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import w1 from "../E-commerce/Women/w1.jpg";
 import w2 from "../E-commerce/Women/w2.jpg";
 import w3 from "../E-commerce/Women/w3.jpg";
@@ -113,8 +113,9 @@ const womenProducts = [
 const Women = () => {
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [sortOption, setSortOption] = useState("featured");
+  const [sortOption, setSortOption] = useState("");
   const [wishlist, setWishlist] = useState([]);
 
   //  unique categories
@@ -161,10 +162,10 @@ const handleAddToCart = (product) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-50 py-12">
-      <div className="container mx-auto px-4 sm:px-6">
+     <div className="container mx-auto px-4 sm:px-6">
         {/* Page Header */}
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
+        <div className="flex items-center justify-center mb-4">
             <Woman className="text-4xl text-pink-500 mr-3" />
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
               Women's Fashion Collection
@@ -175,63 +176,65 @@ const handleAddToCart = (product) => {
           </p>
         </div>
 
-        {/* Filters Section */}
-        <div className="bg-white p-4 rounded-lg shadow-md mb-8">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Search Input */}
-            <div className="relative flex-grow">
-            <TextField
-                fullWidth
-                placeholder="Search women's products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search className="text-gray-400" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
+       
+         {/* Filters Section */}
+                <div className="bg-white p-4 rounded-lg shadow-md mb-8">
+                  <div className="flex flex-col md:flex-row gap-4">
+                    {/* Search Input */}
+                    <div className="relative flex-grow">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Search className="text-gray-400" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Search men's products..."
+                        className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+        
 
-            {/* Category Filter */}
             <div className="relative w-full md:w-64">
-              <Select
-                fullWidth
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <FilterList className="text-gray-400" />
-                  </InputAdornment>
-                }
-                displayEmpty
-              >
-                <MenuItem value="all">All Categories</MenuItem>
-                {categories.map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
+                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                           <FilterList className="text-gray-400" />
+                         </div>
+                         <select
+                           value={categoryFilter}
+                           onChange={(e) => setCategoryFilter(e.target.value)}
+                           className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                         >
+                           <option value="all">All </option>
+                           {categories.map((category) => (
+                             <option key={category} value={category}>
+                               {category.charAt(0).toUpperCase() + category.slice(1)}
+                             </option>
+                           ))}
+                         </select>
+                       </div>
 
             {/* Sort Filter */}
-            <div className="relative w-full md:w-64">
-              <Select
-                fullWidth
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value)}
-                displayEmpty
-              >
-                <MenuItem value="featured">Featured</MenuItem>
-                <MenuItem value="price-low-high">Price: Low to High</MenuItem>
-                <MenuItem value="price-high-low">Price: High to Low</MenuItem>
-                <MenuItem value="name-asc">Name: A-Z</MenuItem>
-                <MenuItem value="name-desc">Name: Z-A</MenuItem>
-              </Select>
-            </div>
+  
+                       <div className="relative w-full md:w-64">
+                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                         {sortOrder === "high-low" ? (
+                           <FaSortAmountUp className="text-gray-400" />
+                         ) : (
+                           <FaSortAmountDown className="text-gray-400" />
+                         )}
+                       </div>
+                         <select
+                           value={sortOption}
+                           onChange={(e) => setSortOption(e.target.value)}
+                           className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                         >
+                           <option value="">Sort By</option>
+                           <option value="price-low-high">Price: Low to High</option>
+                           <option value="price-high-low">Price: High to Low</option>
+                           <option value="name-asc">Name: A-Z</option>
+                           <option value="name-desc">Name: Z-A</option>
+                         </select>
+                       </div>
           </div>
         </div>
 
