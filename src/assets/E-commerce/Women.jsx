@@ -14,7 +14,7 @@ import {
   CurrencyRupee,
   Woman
 } from "@mui/icons-material";
-import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import w1 from "../E-commerce/Women/w1.jpg";
 import w2 from "../E-commerce/Women/w2.jpg";
 import w3 from "../E-commerce/Women/w3.jpg";
@@ -109,16 +109,14 @@ const womenProducts = [
   { id: 45, name: "Dual-Tone Saree Combo", price: "8,299", image: w45, category: "sarees" }
 ];
 
-
 const Women = () => {
-  const { addToCart } = useCart();
+  const { addToCart, wishlist, addToWishlist, removeFromWishlist } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOption, setSortOption] = useState("");
-  const [wishlist, setWishlist] = useState([]);
 
-  //  unique categories
+  // Unique categories
   const categories = [...new Set(womenProducts.map(product => product.category))];
 
   // Filtering & sorting products
@@ -136,36 +134,46 @@ const Women = () => {
       return 0; // Default/filtered order
     });
 
-const handleAddToCart = (product) => {
-      addToCart(product);
-      toast.success(`${product.name} added to cart!`, {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        
-      });
-    };
-
-  const toggleWishlist = (productId) => {
-    setWishlist(prev =>
-      prev.includes(productId)
-        ? prev.filter(id => id !== productId)
-        : [...prev, productId]
-    );
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
-  // random rating 
+  const toggleWishlist = (product) => {
+    const isInWishlist = wishlist.some(item => item.id === product.id);
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+      toast.info(`${product.name} removed from wishlist`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    } else {
+      addToWishlist(product);
+      toast.success(`${product.name} added to wishlist!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    }
+  };
+
+  // Random rating 
   const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-50 py-12">
-     <div className="container mx-auto px-4 sm:px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Page Header */}
         <div className="text-center mb-12">
-        <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-4">
             <Woman className="text-4xl text-pink-500 mr-3" />
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
               Women's Fashion Collection
@@ -176,65 +184,63 @@ const handleAddToCart = (product) => {
           </p>
         </div>
 
-       
-         {/* Filters Section */}
-                <div className="bg-white p-4 rounded-lg shadow-md mb-8">
-                  <div className="flex flex-col md:flex-row gap-4">
-                    {/* Search Input */}
-                    <div className="relative flex-grow">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search className="text-gray-400" />
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Search men's products..."
-                        className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-        
+        {/* Filters Section */}
+        <div className="bg-white p-4 rounded-lg shadow-md mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search Input */}
+            <div className="relative flex-grow">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search women's products..."
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
+            {/* Category Filter */}
             <div className="relative w-full md:w-64">
-                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                           <FilterList className="text-gray-400" />
-                         </div>
-                         <select
-                           value={categoryFilter}
-                           onChange={(e) => setCategoryFilter(e.target.value)}
-                           className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
-                         >
-                           <option value="all">All </option>
-                           {categories.map((category) => (
-                             <option key={category} value={category}>
-                               {category.charAt(0).toUpperCase() + category.slice(1)}
-                             </option>
-                           ))}
-                         </select>
-                       </div>
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FilterList className="text-gray-400" />
+              </div>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              >
+                <option value="all">All</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* Sort Filter */}
-  
-                       <div className="relative w-full md:w-64">
-                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                         {sortOrder === "high-low" ? (
-                           <FaSortAmountUp className="text-gray-400" />
-                         ) : (
-                           <FaSortAmountDown className="text-gray-400" />
-                         )}
-                       </div>
-                         <select
-                           value={sortOption}
-                           onChange={(e) => setSortOption(e.target.value)}
-                           className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
-                         >
-                           <option value="">Sort By</option>
-                           <option value="price-low-high">Price: Low to High</option>
-                           <option value="price-high-low">Price: High to Low</option>
-                           <option value="name-asc">Name: A-Z</option>
-                           <option value="name-desc">Name: Z-A</option>
-                         </select>
-                       </div>
+            <div className="relative w-full md:w-64">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                {sortOption === "price-high-low" ? (
+                  <FaSortAmountUp className="text-gray-400" />
+                ) : (
+                  <FaSortAmountDown className="text-gray-400" />
+                )}
+              </div>
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              >
+                <option value="">Sort By</option>
+                <option value="price-low-high">Price: Low to High</option>
+                <option value="price-high-low">Price: High to Low</option>
+                <option value="name-asc">Name: A-Z</option>
+                <option value="name-desc">Name: Z-A</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -243,15 +249,15 @@ const handleAddToCart = (product) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => {
               const rating = getRandomRating();
-              const isNew = Math.random() > 0.7; // 30% chance to be "new"
-              const isOnSale = Math.random() > 0.8; // 20% chance to be on sale
+              const isNew = Math.random() > 0.7;
+              const isOnSale = Math.random() > 0.8;
 
               return (
                 <div
                   key={product.id}
                   className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
                 >
-                  {/*  Image with Badges */}
+                  {/* Image with Badges */}
                   <div className="relative h-72 overflow-hidden">
                     <img
                       src={product.image}
@@ -260,16 +266,16 @@ const handleAddToCart = (product) => {
                       loading="lazy"
                     />
                     
-                    {/* Wishlist Btn*/}
+                    {/* Wishlist Button */}
                     <button
-                      onClick={() => toggleWishlist(product.id)}
+                      onClick={() => toggleWishlist(product)}
                       className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
-                        wishlist.includes(product.id)
+                        wishlist.some(item => item.id === product.id)
                           ? "text-red-500 bg-white/90"
                           : "text-gray-400 bg-white/80 hover:text-red-500"
                       }`}
                     >
-                      {wishlist.includes(product.id) ? (
+                      {wishlist.some(item => item.id === product.id) ? (
                         <Favorite fontSize="small" />
                       ) : (
                         <FavoriteBorder fontSize="small" />
@@ -330,7 +336,7 @@ const handleAddToCart = (product) => {
                       )}
                     </div>
 
-                    {/* Add to Cart Btn*/}
+                    {/* Add to Cart Button */}
                     <Button
                       variant="contained"
                       fullWidth
@@ -371,4 +377,4 @@ const handleAddToCart = (product) => {
   );
 };
 
-export default Women; 
+export default Women;
