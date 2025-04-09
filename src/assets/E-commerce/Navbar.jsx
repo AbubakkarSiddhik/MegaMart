@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useCart } from "./CartContext";
-import { Menu, Close, ShoppingCart, AccountCircle, GetApp } from "@mui/icons-material";
+import { Menu, Close, ShoppingCart, AccountCircle, GetApp, Favorite } from "@mui/icons-material";
 import { useState } from "react";
 import { AiFillApple } from "react-icons/ai";
 import { FaGooglePlay } from "react-icons/fa";
@@ -59,7 +59,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             >
               <button className="flex items-center text-black hover:text-blue-500 ml-4">
                 <GetApp fontSize="medium" className="mr-1" />
-                <span className="text-sm font-medium">Download App</span>
+                <span className="text-sm font-medium">Get App</span>
               </button>
               
               {appDropdownOpen && (
@@ -83,7 +83,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             </div>
           </div>
 
-          {/* Cart & Account */}
+          {/* Cart, Wishlist & Account */}
           <div className="flex items-center space-x-4">
             <NavLink to="/cart" className="relative cursor-pointer">
               <ShoppingCart className="text-black hover:text-blue-500" fontSize="large" />
@@ -92,6 +92,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                   {cart.length}
                 </span>
               )}
+            </NavLink>
+
+            <NavLink to="/wishlist">
+              <Favorite className="text-black hover:text-red-500 cursor-pointer" fontSize="large" />
             </NavLink>
 
             <NavLink to="/account">
@@ -134,6 +138,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               Reviews
             </NavLink>
 
+            
             <NavLink to="/contact" className={({ isActive }) => 
               isActive ? "text-blue-500 border-b-2 border-blue-500" : "text-black hover:text-blue-500"
             }>
@@ -145,7 +150,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               <button className="flex items-center justify-center w-full text-black hover:text-blue-500"
                       onClick={() => setAppDropdownOpen(!appDropdownOpen)}>
                 <GetApp fontSize="medium" className="mr-1" />
-                <span>Download App</span>
+                <span>Get App</span>
               </button>
               
               {appDropdownOpen && (
