@@ -72,14 +72,12 @@ const footwearProducts = [
   { id: 25, name: "Polished Brown Formal Shoes", price: 10999, image: f25, category: "formal" }
 ];
 
-
 const Footwear = () => {
-  const { addToCart } = useCart();
+  const { addToCart, wishlist, addToWishlist, removeFromWishlist } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOption, setSortOption] = useState("");
-  const [wishlist, setWishlist] = useState([]);
 
   // Category icons mapping
   const categoryIcons = {
@@ -115,19 +113,29 @@ const Footwear = () => {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-
     });
   };
 
-  const toggleWishlist = (productId) => {
-    setWishlist(prev =>
-      prev.includes(productId)
-        ? prev.filter(id => id !== productId)
-        : [...prev, productId]
-    );
+  const toggleWishlist = (product) => {
+    const isInWishlist = wishlist.some(item => item.id === product.id);
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+      toast.info(`${product.name} removed from wishlist`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    } else {
+      addToWishlist(product);
+      toast.success(`${product.name} added to wishlist!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    }
   };
 
-  // random rating 
+  // Random rating 
   const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
 
   return (
@@ -179,7 +187,7 @@ const Footwear = () => {
                 }
                 displayEmpty
               >
-                <MenuItem value="all">All </MenuItem>
+                <MenuItem value="all">All</MenuItem>
                 {[...new Set(footwearProducts.map(p => p.category))].map((category) => (
                   <MenuItem key={category} value={category}>
                     <div className="flex items-center">
@@ -196,7 +204,7 @@ const Footwear = () => {
             {/* Sort Filter */}
             <div className="relative w-full md:w-64">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                {sortOrder === "high-low" ? (
+                {sortOption === "price-high-low" ? (
                   <FaSortAmountUp className="text-gray-400" />
                 ) : (
                   <FaSortAmountDown className="text-gray-400" />
@@ -224,8 +232,8 @@ const Footwear = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => {
               const rating = getRandomRating();
-              const isNew = Math.random() > 0.7; // 30% chance to be "new"
-              const isOnSale = Math.random() > 0.8; // 20% chance to be on sale
+              const isNew = Math.random() > 0.7;
+              const isOnSale = Math.random() > 0.8;
 
               return (
                 <div
@@ -243,13 +251,14 @@ const Footwear = () => {
 
                     {/* Wishlist Button */}
                     <button
-                      onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${wishlist.includes(product.id)
+                      onClick={() => toggleWishlist(product)}
+                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
+                        wishlist.some(item => item.id === product.id)
                           ? "text-red-500 bg-white/90"
                           : "text-gray-400 bg-white/80 hover:text-red-500"
-                        }`}
+                      }`}
                     >
-                      {wishlist.includes(product.id) ? (
+                      {wishlist.some(item => item.id === product.id) ? (
                         <Favorite fontSize="small" />
                       ) : (
                         <FavoriteBorder fontSize="small" />
@@ -311,7 +320,7 @@ const Footwear = () => {
                       )}
                     </div>
 
-                    {/* Add to Cart Btn*/}
+                    {/* Add to Cart Button */}
                     <Button
                       variant="contained"
                       fullWidth
