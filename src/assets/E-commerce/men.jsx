@@ -7,15 +7,14 @@ import {
   ShoppingCart,
   Search,
   Favorite,
-  FilterList,
   FavoriteBorder,
+  FilterList,
   LocalOffer,
   Star,
   CurrencyRupee,
   Man
 } from "@mui/icons-material";
-import {  FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
-
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 
 import m1 from "../E-commerce/Men/m1.jpg";
 import m2 from "../E-commerce/Men/m2.jpg";
@@ -56,7 +55,6 @@ import m36 from "../E-commerce/Men/m36.jpg";
 import m37 from "../E-commerce/Men/m37.jpg";
 import m38 from "../E-commerce/Men/m38.jpg";
 import m39 from "../E-commerce/Men/m39.jpg";
-
 
 const menProducts = [
   { id: 1, name: "Beige Hoodie", price: 4150, image: m1, category: "hoodies" },
@@ -101,12 +99,11 @@ const menProducts = [
 ];
 
 const Men = () => {
-  const { addToCart } = useCart();
+  const { addToCart, wishlist, addToWishlist, removeFromWishlist } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("");
   const [sortOption, setSortOption] = useState("featured");
-  const [wishlist, setWishlist] = useState([]);
 
   // Get unique categories
   const categories = [...new Set(menProducts.map(product => product.category))];
@@ -126,40 +123,50 @@ const Men = () => {
       return 0; // Default/filtered order
     });
 
-    const handleAddToCart = (product) => {
-      addToCart(product);
-      toast.success(`${product.name} added to cart!`, {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        
-      });
-    };
-
-  const toggleWishlist = (productId) => {
-    setWishlist(prev =>
-      prev.includes(productId)
-        ? prev.filter(id => id !== productId)
-        : [...prev, productId]
-    );
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
-  //random rating 
+  const toggleWishlist = (product) => {
+    const isInWishlist = wishlist.some(item => item.id === product.id);
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+      toast.info(`${product.name} removed from wishlist`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    } else {
+      addToWishlist(product);
+      toast.success(`${product.name} added to wishlist!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    }
+  };
+
+  // Random rating 
   const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-pink-50 py-12">
-     <div className="container mx-auto px-4 sm:px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Page Header */}
         <div className="text-center mb-12">
-        <div className="flex items-center justify-center mb-4">
-         <Man className="text-4xl text-blue-500 mr-3" />
-         <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-            Men's Fashion Collection
-          </h1>
+          <div className="flex items-center justify-center mb-4">
+            <Man className="text-4xl text-blue-500 mr-3" />
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+              Men's Fashion Collection
+            </h1>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Discover premium quality clothing tailored for the modern man
@@ -204,13 +211,13 @@ const Men = () => {
 
             {/* Sort Filter */}
             <div className="relative w-full md:w-64">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              {sortOrder === "high-low" ? (
-                <FaSortAmountUp className="text-gray-400" />
-              ) : (
-                <FaSortAmountDown className="text-gray-400" />
-              )}
-            </div>
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                {sortOption === "price-high-low" ? (
+                  <FaSortAmountUp className="text-gray-400" />
+                ) : (
+                  <FaSortAmountDown className="text-gray-400" />
+                )}
+              </div>
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
@@ -231,15 +238,15 @@ const Men = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => {
               const rating = getRandomRating();
-              const isNew = Math.random() > 0.7; // 30% chance to be "new"
-              const isOnSale = Math.random() > 0.8; // 20% chance to be on sale
+              const isNew = Math.random() > 0.7;
+              const isOnSale = Math.random() > 0.8;
 
               return (
                 <div
                   key={product.id}
                   className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
                 >
-                  {/*  Img with Badges */}
+                  {/* Img with Badges */}
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={product.image}
@@ -248,20 +255,20 @@ const Men = () => {
                       loading="lazy"
                     />
                     
-                    {/* Wishlist Btn*/}
+                    {/* Wishlist Button */}
                     <button
-                      onClick={() => toggleWishlist(product.id)}
+                      onClick={() => toggleWishlist(product)}
                       className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
-                        wishlist.includes(product.id)
+                        wishlist.some(item => item.id === product.id)
                           ? "text-red-500 bg-white/90"
                           : "text-gray-400 bg-white/80 hover:text-red-500"
                       }`}
                     >
-                       {wishlist.includes(product.id) ? (
-                                              <Favorite fontSize="small" />
-                                            ) : (
-                                              <FavoriteBorder fontSize="small" />
-                                            )}
+                      {wishlist.some(item => item.id === product.id) ? (
+                        <Favorite fontSize="small" />
+                      ) : (
+                        <FavoriteBorder fontSize="small" />
+                      )}
                     </button>
                     
                     {/* Badges */}
@@ -318,7 +325,7 @@ const Men = () => {
                       )}
                     </div>
 
-                    {/* Add to Cart Btn*/}
+                    {/* Add to Cart Button */}
                     <Button
                       variant="contained"
                       fullWidth
