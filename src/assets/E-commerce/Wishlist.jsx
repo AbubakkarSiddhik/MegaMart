@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Wishlist = () => {
-  const { wishlist, removeFromWishlist, addToCart } = useCart();
+  const { wishlist, removeFromWishlist, addToCart, clearWishlist } = useCart();
 
   // Animation variants
   const itemVariants = {
@@ -50,6 +50,19 @@ const Wishlist = () => {
     });
   };
 
+  const handleRemoveAll = () => {
+    clearWishlist();
+    toast.info("All items removed from wishlist", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored"
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <motion.div
@@ -65,11 +78,24 @@ const Wishlist = () => {
               <Favorite className="text-red-500 mr-3" fontSize="large" />
               <h1 className="text-3xl font-bold text-gray-900">My Wishlist</h1>
             </div>
-            {wishlist.length > 0 && (
-              <span className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium border border-red-200">
-                {wishlist.length} {wishlist.length === 1 ? 'item' : 'items'}
-              </span>
-            )}
+            <div className="flex items-center gap-4">
+              {wishlist.length > 0 && (
+                <>
+                  <span className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium border border-red-200">
+                    {wishlist.length} {wishlist.length === 1 ? 'item' : 'items'}
+                  </span>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleRemoveAll}
+                    className="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  >
+                    <Delete fontSize="small" className="mr-2" />
+                    Remove All
+                  </motion.button>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -184,4 +210,4 @@ const Wishlist = () => {
   );
 };
 
-export default Wishlist; 
+export default Wishlist;
