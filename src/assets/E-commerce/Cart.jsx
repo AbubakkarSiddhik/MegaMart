@@ -7,7 +7,7 @@ import { Chip } from "@mui/material";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cart, addToCart, decreaseQuantity, removeFromCart } = useCart();
+  const { cart, addToCart, decreaseQuantity, removeFromCart, clearCart } = useCart();
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const tax = subtotal * 0.18; // 18% tax
@@ -28,6 +28,10 @@ const Cart = () => {
     }
   };
 
+  const handleRemoveAll = () => {
+    clearCart();
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -35,15 +39,28 @@ const Cart = () => {
       transition={{ duration: 0.3 }}
       className="max-w-4xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl shadow-lg"
     >
-      <div className="flex items-center mb-8">
-        <FiShoppingCart className="text-3xl text-purple-600 mr-3" />
-        <h2 className="text-3xl font-bold text-gray-800">Your Shopping Cart</h2>
-        <Chip 
-          label={`${cart.length} items`} 
-          color="primary" 
-          className="ml-4" 
-          size="small"
-        />
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center">
+          <FiShoppingCart className="text-3xl text-purple-600 mr-3" />
+          <h2 className="text-3xl font-bold text-gray-800">Your Shopping Cart</h2>
+          <Chip 
+            label={`${cart.length} items`} 
+            color="primary" 
+            className="ml-4" 
+            size="small"
+          />
+        </div>
+        {cart.length > 0 && (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRemoveAll}
+            className="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+          >
+            <FiTrash2 className="mr-2" />
+            Remove All
+          </motion.button>
+        )}
       </div>
 
       {cart.length === 0 ? (
