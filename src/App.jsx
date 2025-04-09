@@ -26,6 +26,7 @@ import Women from "./assets/E-commerce/Women";
 import Accessories from "./assets/E-commerce/Accessories";
 import Footwear from "./assets/E-commerce/Footwear";
 import ReviewsPage from "./assets/E-commerce/ReviewsPage";
+import Wishlist from "./assets/E-commerce/Wishlist";
 
 
 
@@ -73,6 +74,7 @@ function App() {
 
 
             <Route path="/cart" element={<Cart />} />
+            <Route path="/wishlist" element={<Wishlist />} />
 
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/account" element={<AccountPage />} />
