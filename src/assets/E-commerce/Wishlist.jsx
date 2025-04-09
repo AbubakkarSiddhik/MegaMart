@@ -90,7 +90,7 @@ const Wishlist = () => {
             <Button
               variant="contained"
               size="large"
-              href="/shop"
+              href="#/shop"
               sx={{
                 backgroundColor: '#3b82f6',
                 '&:hover': { backgroundColor: '#2563eb' },
