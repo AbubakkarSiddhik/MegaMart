@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useCart } from "./CartContext";
 import { products } from "./products";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,12 +7,17 @@ import { FaSearch, FaShoppingCart, FaFilter, FaSortAmountDown, FaSortAmountUp, F
 import { GiClothes, GiRunningShoe, GiNecklace } from "react-icons/gi";
 import { IoShirtSharp } from "react-icons/io5";
 import { MdDiscount, MdCategory } from "react-icons/md";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { AuthContext } from "./AuthContext"; // Adjust path
+import { LoginPrompt } from "./LoginPrompt"; // Adjust path
 
 const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const { addToCart } = useCart();
+  const { addToCart, wishlist, addToWishlist, removeFromWishlist } = useCart();
+  const { user } = useContext(AuthContext); // Access user from AuthContext
+  const [loginPromptOpen, setLoginPromptOpen] = useState(false); // State for LoginPrompt
 
   // Category icons mapping
   const categoryIcons = {
@@ -34,11 +39,15 @@ const ProductList = () => {
 
   const sortedProducts = [...filteredBySearch].sort((a, b) => {
     if (sortOrder === "low-high") return a.price - b.price;
-    if (sortOrder === "high-low") return b.price - a.price;
+    if (sortOrder === "high-low") return b.price - b.price;
     return 0;
   });
 
   const handleAddToCart = (product) => {
+    if (!user) {
+      setLoginPromptOpen(true);
+      return;
+    }
     addToCart(product);
     toast.success(`${product.name} added to cart!`, {
       position: "bottom-right",
@@ -48,9 +57,32 @@ const ProductList = () => {
     });
   };
 
-  //  random rating 
+  const toggleWishlist = (product) => {
+    if (!user) {
+      setLoginPromptOpen(true);
+      return;
+    }
+    const isInWishlist = wishlist.some(item => item.id === product.id);
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+      toast.info(`${product.name} removed from wishlist`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    } else {
+      addToWishlist(product);
+      toast.success(`${product.name} added to wishlist!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        theme: "colored"
+      });
+    }
+  };
+
+  // Random rating 
   const getRandomRating = () => {
-    return (Math.random() * 2 + 3).toFixed(1); 
+    return (Math.random() * 2 + 3).toFixed(1);
   };
 
   return (
@@ -120,8 +152,8 @@ const ProductList = () => {
           {sortedProducts.length > 0 ? (
             sortedProducts.map((product) => {
               const rating = getRandomRating();
-              const isNew = Math.random() > 0.7; // 30% chance to be "new"
-              const isOnSale = Math.random() > 0.8; // 20% chance to be on sale
+              const isNew = Math.random() > 0.7;
+              const isOnSale = Math.random() > 0.8;
 
               return (
                 <div
@@ -135,14 +167,31 @@ const ProductList = () => {
                       alt={product.name}
                       className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
                     />
+                    {/* Wishlist Button */}
+                    <button
+                      onClick={() => toggleWishlist(product)}
+                      className={`absolute top-2 right-2 p-2 rounded-full transition-colors ${
+                        wishlist.some(item => item.id === product.id)
+                          ? "text-red-500 bg-white/90"
+                          : "text-gray-400 bg-white/80 hover:text-red-500"
+                      }`}
+                    >
+                      {wishlist.some(item => item.id === product.id) ? (
+                        <Favorite fontSize="small" />
+                      ) : (
+                        <FavoriteBorder fontSize="small" />
+                      )}
+                    </button>
+
+                    {/* Badges */}
                     {isNew && (
                       <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                         New
                       </div>
                     )}
                     {isOnSale && (
-                      <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
-                        <MdDiscount className="mr-1" />
+                      <div className="absolute top-10 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                        <MdDiscount fontSize="small" className="mr-1" />
                         Sale
                       </div>
                     )}
@@ -212,6 +261,7 @@ const ProductList = () => {
         </div>
       </div>
 
+      <LoginPrompt open={loginPromptOpen} onClose={() => setLoginPromptOpen(false)} />
       <ToastContainer />
     </section>
   );
