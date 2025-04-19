@@ -15,7 +15,7 @@ import Logo from "./Logo.png";
 import { AuthContext } from "./AuthContext";
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
-  const { cart } = useCart();
+  const { cart, wishlist } = useCart();
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -152,11 +152,17 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               )}
             </NavLink>
 
-            <NavLink to="/wishlist">
+            {/* Wishlist Icon with Badge */}
+            <NavLink to="/wishlist" className="relative cursor-pointer">
               <Favorite
-                className="text-black hover:text-red-500 cursor-pointer"
+                className="text-black hover:text-red-500"
                 fontSize="large"
               />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
             </NavLink>
 
             {/* Profile Dropdown */}
@@ -293,36 +299,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             </NavLink>
             {user && (
               <>
-                <NavLink
-                  to="/profile"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-500 border-b-2 border-blue-500"
-                      : "text-black hover:text-blue-500"
-                  }
-                >
-                  Profile
-                </NavLink>
-                <NavLink
-                  to="/profile/editprofilepage"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-500 border-b-2 border-blue-500"
-                      : "text-black hover:text-blue-500"
-                  }
-                >
-                  Edit Profile
-                </NavLink>
-                <NavLink
-                  to="/profile/orders"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-500 border-b-2 border-blue-500"
-                      : "text-black hover:text-blue-500"
-                  }
-                >
-                  My Orders
-                </NavLink>
                 <button
                   onClick={handleLogout}
                   className="flex items-center justify-center text-black hover:text-blue-500"
