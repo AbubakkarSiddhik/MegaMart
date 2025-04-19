@@ -8,18 +8,66 @@ import {
   Typography,
   IconButton,
   Avatar,
+  Card,
+  CardContent,
+  Grid,
+  Divider,
+  CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { ArrowBack, AddPhotoAlternate } from "@mui/icons-material";
+import {
+  ArrowBack,
+  AddPhotoAlternate,
+  Person,
+  Email,
+  Phone,
+  LocationOn,
+  Save,
+  Cancel,
+} from "@mui/icons-material";
 
 const EditProfilePage = () => {
   const { user, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [name, setName] = useState(user.name || "");
-  const [profilePic, setProfilePic] = useState(user.profilePic || "");
+  const [formData, setFormData] = useState({
+    name: user.name || "",
+    email: user.email || "",
+    phone: user.phone || "",
+    address: user.address || "",
+    profilePic: user.profilePic || "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
-  const handleSave = () => {
-    updateUserProfile({ ...user, name, profilePic });
-    navigate("/profile");
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      await updateUserProfile(formData);
+      setSnackbar({
+        open: true,
+        message: "Profile updated successfully!",
+        severity: "success",
+      });
+      setTimeout(() => navigate("/profile"), 1500);
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Failed to update profile",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleProfilePicChange = (event) => {
@@ -27,7 +75,7 @@ const EditProfilePage = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfilePic(reader.result);
+        setFormData({ ...formData, profilePic: reader.result });
       };
       reader.readAsDataURL(file);
     }
@@ -50,54 +98,176 @@ const EditProfilePage = () => {
         Back
       </Button>
 
-      <Box sx={{ maxWidth: 600, mx: "auto" }}>
-        <Typography variant="h5" sx={{ mb: 3, textAlign: "center" }}>
-          Edit Profile
-        </Typography>
-        <Box sx={{ textAlign: "center", mb: 3 }}>
-          <Avatar
-            src={profilePic}
-            sx={{ width: 100, height: 100, mx: "auto", mb: 2 }}
-          >
-            {name.charAt(0)?.toUpperCase() || "U"}
-          </Avatar>
-          <IconButton
-            color="primary"
-            component="label"
-            sx={{ mb: 2 }}
-          >
-            <AddPhotoAlternate />
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              onChange={handleProfilePicChange}
-            />
-          </IconButton>
-        </Box>
-        <TextField
-          label="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          fullWidth
-          sx={{ mb: 2 }}
-        />
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={handleSave}
-          sx={{ mb: 2 }}
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={8} lg={6}>
+          <Card elevation={3}>
+            <CardContent sx={{ p: 0 }}>
+              {/* Profile Header */}
+              <Box
+                sx={{
+                  bgcolor: "primary.main",
+                  p: 3,
+                  color: "primary.contrastText",
+                  textAlign: "center",
+                  position: "relative",
+                }}
+              >
+                <Box sx={{ position: "relative", display: "inline-block" }}>
+                  <Avatar
+                    src={formData.profilePic}
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      mx: "auto",
+                      mb: 2,
+                      bgcolor: "secondary.main",
+                      fontSize: "2.5rem",
+                    }}
+                  >
+                    {formData.name.charAt(0)?.toUpperCase() || "U"}
+                  </Avatar>
+                  <IconButton
+                    color="inherit"
+                    component="label"
+                    sx={{ 
+                      position: "absolute", 
+                      bottom: 10, 
+                      right: 10,
+                      backgroundColor: "rgba(0,0,0,0.4)",
+                      "&:hover": {
+                        backgroundColor: "rgba(0,0,0,0.6)",
+                      }
+                    }}
+                  >
+                    <AddPhotoAlternate />
+                    <input
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      onChange={handleProfilePicChange}
+                    />
+                  </IconButton>
+                </Box>
+                <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
+                  Edit Your Profile
+                </Typography>
+              </Box>
+
+              {/* Editable Profile Fields */}
+              <Box sx={{ p: 3 }}>
+                <Typography
+                  variant="h6"
+                  sx={{ mb: 3, display: "flex", alignItems: "center", gap: 1 }}
+                >
+                  <Person fontSize="medium" />
+                  Personal Information
+                </Typography>
+
+                <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
+                  <Grid item xs={1}>
+                    <Person />
+                  </Grid>
+                  <Grid item xs={11}>
+                    <TextField
+                      label="Full Name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
+                  <Grid item xs={1}>
+                    <Email />
+                  </Grid>
+                  <Grid item xs={11}>
+                    <TextField
+                      label="Email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
+                  <Grid item xs={1}>
+                    <Phone />
+                  </Grid>
+                  <Grid item xs={11}>
+                    <TextField
+                      label="Phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid container spacing={2} alignItems="center" sx={{ mb: 4 }}>
+                  <Grid item xs={1}>
+                    <LocationOn />
+                  </Grid>
+                  <Grid item xs={11}>
+                    <TextField
+                      label="Address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      fullWidth
+                      multiline
+                      rows={3}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Divider sx={{ my: 3 }} />
+
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<Save />}
+                    onClick={handleSave}
+                    disabled={loading}
+                    sx={{ flex: 1 }}
+                  >
+                    {loading ? <CircularProgress size={24} /> : "Save Changes"}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Cancel />}
+                    onClick={() => navigate("/profile")}
+                    sx={{ flex: 1 }}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+          variant="filled"
         >
-          Save Changes
-        </Button>
-        <Button
-          variant="outlined"
-          fullWidth
-          onClick={() => navigate("/profile")}
-        >
-          Cancel
-        </Button>
-      </Box>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
