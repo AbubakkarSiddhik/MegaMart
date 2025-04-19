@@ -172,7 +172,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 className="flex items-center text-black hover:text-blue-500 cursor-pointer"
               >
                 <AccountCircle fontSize="large" />
-                <span className="ml-1 text-sm font-medium">Profile</span>
+                
               </button>
 
               {profileDropdownOpen && (
