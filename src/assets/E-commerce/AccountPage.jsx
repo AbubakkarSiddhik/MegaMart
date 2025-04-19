@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Button,
@@ -21,13 +21,12 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
-  onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase";
 
 const AccountPage = () => {
-  const { login } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -47,14 +46,7 @@ const AccountPage = () => {
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        login({ email: user.email, uid: user.uid, name: user.displayName || "User" });
-      }
-    });
-    return unsubscribe;
-  }, [login]);
+  // Remove the useEffect with onAuthStateChanged
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -66,7 +58,7 @@ const AccountPage = () => {
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value }); // Fixed typo: changed setLogin_vmData to setLoginData
+    setLoginData({ ...loginData, [name]: value });
     if (errors[name]) setErrors({ ...errors, [name]: "" });
     setValidationError(null);
   };
@@ -161,7 +153,6 @@ const AccountPage = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
       const user = userCredential.user;
 
-      // Update Firebase user profile with displayName
       await updateProfile(user, {
         displayName: signupData.name,
       });
@@ -208,6 +199,12 @@ const AccountPage = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Redirect if already logged in
+  if (user) {
+    setTimeout(() => navigate("/"), 0); // Immediate redirect
+    return null; // Prevent rendering the login/signup form
+  }
 
   return (
     <motion.div
