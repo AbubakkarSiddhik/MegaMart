@@ -22,6 +22,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase";
 
@@ -65,7 +66,7 @@ const AccountPage = () => {
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
+    setLoginData({ ...loginData, [name]: value }); // Fixed typo: changed setLogin_vmData to setLoginData
     if (errors[name]) setErrors({ ...errors, [name]: "" });
     setValidationError(null);
   };
@@ -128,7 +129,7 @@ const AccountPage = () => {
       const userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
       const user = userCredential.user;
       login({ email: user.email, uid: user.uid, name: user.displayName || "User" });
-      setAuthSuccess("Login successful! ");
+      setAuthSuccess("Login successful!");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       switch (error.code) {
@@ -159,8 +160,14 @@ const AccountPage = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
       const user = userCredential.user;
+
+      // Update Firebase user profile with displayName
+      await updateProfile(user, {
+        displayName: signupData.name,
+      });
+
       login({ email: user.email, uid: user.uid, name: signupData.name });
-      setAuthSuccess("Account created successfully! ");
+      setAuthSuccess("Account created successfully!");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       console.log("Signup Error:", error);
@@ -192,7 +199,7 @@ const AccountPage = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       login({ email: user.email, uid: user.uid, name: user.displayName || "Google User" });
-      setAuthSuccess("Signed in with Google! ");
+      setAuthSuccess("Signed in with Google!");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       console.log("Google Sign-in Error:", error);
