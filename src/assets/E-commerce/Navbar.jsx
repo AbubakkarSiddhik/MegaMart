@@ -1,13 +1,18 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
 import {
+  Person,
+  Edit,
   Menu,
   Close,
   ShoppingCart,
   AccountCircle,
   GetApp,
   Favorite,
+  ExitToApp,
 } from "@mui/icons-material";
+import { FiLogIn } from "react-icons/fi";
+import { Avatar } from "@mui/material";
 import { useState, useContext, useEffect, useRef } from "react";
 import { AiFillApple } from "react-icons/ai";
 import { FaGooglePlay } from "react-icons/fa";
@@ -167,67 +172,98 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
             {/* Profile Dropdown */}
             <div className="relative" ref={profileRef}>
-              <button
-                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center text-black hover:text-blue-500 cursor-pointer"
-              >
-                <AccountCircle fontSize="large" />
-                
-              </button>
+  <button
+    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+    className="flex items-center text-black hover:text-blue-500 cursor-pointer"
+  >
+    <AccountCircle fontSize="large" className="text-gray-700 hover:text-blue-600 transition-colors" />
+    {user && (
+      <span className="ml-1 text-sm font-medium hidden md:inline">
+        {user.name?.split(" ")[0] || "Account"}
+      </span>
+    )}
+  </button>
 
-              {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-60 bg-white shadow-lg rounded-lg p-4 z-50">
-                  {user ? (
-                    <div className="flex flex-col items-start">
-                      <p className="text-sm font-semibold mb-2">
-                        Welcome, {user.name || "User"}
-                      </p>
-                      <NavLink
-                        to="/profilepage"
-                        onClick={() => setProfileDropdownOpen(false)}
-                        className="text-blue-600 hover:underline text-sm mb-2"
-                      >
-                        View Profile
-                      </NavLink>
-                      <NavLink
-                        to="/profile/editprofilepage"
-                        onClick={() => setProfileDropdownOpen(false)}
-                        className="text-blue-600 hover:underline text-sm mb-2"
-                      >
-                        Edit Profile
-                      </NavLink>
-                      <NavLink
-                        to="/profile/orders"
-                        onClick={() => setProfileDropdownOpen(false)}
-                        className="text-blue-600 hover:underline text-sm mb-2"
-                      >
-                        My Orders
-                      </NavLink>
-                      <button
-                        onClick={handleLogout}
-                        className="text-red-600 hover:underline text-sm"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <p className="font-semibold">Welcome</p>
-                      <p className="text-sm text-gray-500 mb-3">
-                        To access account and manage orders
-                      </p>
-                      <NavLink
-                        to="/account"
-                        onClick={() => setProfileDropdownOpen(false)}
-                        className="inline-block px-4 py-2 border border-pink-500 text-pink-600 font-bold text-sm rounded hover:bg-pink-50"
-                      >
-                        LOGIN / SIGNUP
-                      </NavLink>
-                    </div>
-                  )}
-                </div>
-              )}
+  {profileDropdownOpen && (
+    <div className="absolute right-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 z-50 border border-gray-100">
+      {user ? (
+        <>
+          <div className="px-4 py-3 border-b border-gray-100">
+            <div className="flex items-center">
+              <Avatar 
+                src={user.profilePic} 
+                className="w-10 h-10 mr-3"
+                sx={{ bgcolor: '#6366f1' }}
+              >
+                {user.name?.charAt(0) || "U"}
+              </Avatar>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">
+                  {user.name || "User"}
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  {user.email}
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div className="py-1">
+            <NavLink
+              to="/profilepage"
+              onClick={() => setProfileDropdownOpen(false)}
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+            >
+              <Person className="mr-3 text-gray-400" fontSize="small" />
+              View Profile
+            </NavLink>
+            <NavLink
+              to="/profile/editprofilepage"
+              onClick={() => setProfileDropdownOpen(false)}
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+            >
+              <Edit className="mr-3 text-gray-400" fontSize="small" />
+              Edit Profile
+            </NavLink>
+            <NavLink
+              to="/profile/orders"
+              onClick={() => setProfileDropdownOpen(false)}
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+            >
+              <ShoppingCart className="mr-3 text-gray-400" fontSize="small" />
+              My Orders
+            </NavLink>
+          </div>
+
+          <div className="py-1 border-t border-gray-100">
+            <button
+              onClick={handleLogout}
+              className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+            >
+              <ExitToApp className="mr-3 text-red-400" fontSize="small" />
+              Logout
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="px-4 py-3">
+          <p className="text-sm font-medium text-gray-900 mb-1">Welcome to MegaMart</p>
+          <p className="text-xs text-gray-500 mb-3">
+            Sign in to access your account and manage orders
+          </p>
+          <NavLink
+            to="/account"
+            onClick={() => setProfileDropdownOpen(false)}
+            className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-md hover:shadow-md transition-all"
+          >
+            <FiLogIn className="mr-2" />
+            LOGIN / SIGNUP
+          </NavLink>
+        </div>
+      )}
+    </div>
+  )}
+</div>
           </div>
 
           <div className="md:hidden">
