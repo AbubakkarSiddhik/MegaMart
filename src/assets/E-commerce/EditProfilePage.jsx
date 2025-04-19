@@ -190,6 +190,7 @@ const EditProfilePage = () => {
                       value={formData.email}
                       onChange={handleChange}
                       fullWidth
+                      disabled
                     />
                   </Grid>
                 </Grid>
