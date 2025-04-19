@@ -12,7 +12,12 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser ? { email: firebaseUser.email, uid: firebaseUser.uid, name: firebaseUser.displayName || "User" } : null);
+      setUser(firebaseUser ? { 
+        email: firebaseUser.email, 
+        uid: firebaseUser.uid, 
+        name: firebaseUser.displayName || "User",
+        profilePic: firebaseUser.photoURL || null
+      } : null);
     });
     return unsubscribe;
   }, []);
@@ -29,8 +34,12 @@ export function AuthProvider({ children }) {
     });
   };
 
+  const updateUserProfile = (updatedData) => {
+    setUser((prev) => ({ ...prev, ...updatedData }));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
