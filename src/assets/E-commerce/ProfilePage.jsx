@@ -186,9 +186,9 @@ const ProfilePage = () => {
                     : "Unknown"} 
                 />
 
-                <Divider sx={{ my: 3 }} />
+                {/* <Divider sx={{ my: 3 }} />
 
-                {/* Orders Section */}
+                Orders Section
                 <Typography
                   variant="h6"
                   sx={{ mb: 3, display: "flex", alignItems: "center", gap: 1 }}
@@ -250,7 +250,7 @@ const ProfilePage = () => {
                   </Box>
                 )}
 
-                <Divider sx={{ my: 3 }} />
+                <Divider sx={{ my: 3 }} /> */}
 
                 <Typography
                   variant="h6"
