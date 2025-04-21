@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Added useLocation
 import { FaCheckCircle, FaShoppingBag, FaHome } from "react-icons/fa";
 import { FiTruck, FiMail } from "react-icons/fi";
 
 const OrderConfirmation = () => {
+  const location = useLocation();
+  const { orderId } = location.state || {}; // Get orderId from state
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -11,9 +13,9 @@ const OrderConfirmation = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.3,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -22,9 +24,9 @@ const OrderConfirmation = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5
-      }
-    }
+        duration: 0.5,
+      },
+    },
   };
 
   return (
@@ -40,7 +42,6 @@ const OrderConfirmation = () => {
         animate="visible"
         className="max-w-md w-full bg-white rounded-xl shadow-xl overflow-hidden"
       >
-        
         <div className="bg-gradient-to-r from-green-400 to-blue-500 p-6 text-center">
           <motion.div variants={itemVariants}>
             <FaCheckCircle className="text-5xl text-white mx-auto mb-4" />
@@ -53,7 +54,7 @@ const OrderConfirmation = () => {
             <p className="text-lg text-gray-700 mb-4">
               Thank you for your purchase! Your order has been placed successfully.
             </p>
-            
+
             <div className="flex flex-col space-y-4 text-left bg-gray-50 p-4 rounded-lg mb-6">
               <div className="flex items-center">
                 <FiMail className="text-blue-500 mr-3 text-xl" />
@@ -66,15 +67,11 @@ const OrderConfirmation = () => {
             </div>
 
             <p className="text-gray-500 text-sm">
-              Order ID: #{Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}
+              Order ID: #{orderId || Math.floor(Math.random() * 1000000).toString().padStart(6, "0")}
             </p>
           </motion.div>
 
-      
-          <motion.div 
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 mt-8"
-          >
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mt-8">
             <Link to="/" className="flex-1">
               <motion.button
                 whileHover={{ scale: 1.03 }}
@@ -98,15 +95,11 @@ const OrderConfirmation = () => {
           </motion.div>
         </div>
 
-  
-<div className="bg-gray-50 px-6 py-4 text-center">
-  <motion.p 
-    variants={itemVariants}
-    className="text-gray-500 text-sm"
-  >
-    Need help? <Link to="/contact" className="text-blue-500 hover:underline">Contact our support</Link>
-  </motion.p>
-</div>
+        <div className="bg-gray-50 px-6 py-4 text-center">
+          <motion.p variants={itemVariants} className="text-gray-500 text-sm">
+            Need help? <Link to="/contact" className="text-blue-500 hover:underline">Contact our support</Link>
+          </motion.p>
+        </div>
       </motion.div>
     </motion.div>
   );
