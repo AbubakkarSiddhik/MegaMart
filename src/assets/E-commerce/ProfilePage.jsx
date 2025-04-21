@@ -14,7 +14,6 @@ import {
   Stack,
   TextField,
   Typography,
-  CircularProgress,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -29,12 +28,9 @@ import {
   CalendarToday,
   Lock,
   ArrowBack,
-  AddPhotoAlternate,
   ShoppingCart,
 } from "@mui/icons-material";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, updateDoc } from "firebase/firestore";
-import { db, storage } from "../../firebase";
+
 
 const ProfileField = ({ icon, label, value }) => (
   <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
@@ -71,8 +67,6 @@ const ProfileField = ({ icon, label, value }) => (
 const ProfilePage = () => {
   const { user, logout, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -86,94 +80,6 @@ const ProfilePage = () => {
 
   const handleEditProfile = () => {
     navigate("/profile/editprofilepage");
-  };
-
-  const handleProfilePicChange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    // Validate file type and size
-    const validTypes = ["image/jpeg", "image/png", "image/gif"];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (!validTypes.includes(file.type)) {
-      setSnackbar({
-        open: true,
-        message: "Please upload a valid image (JPEG, PNG, GIF)",
-        severity: "error",
-      });
-      return;
-    }
-
-    if (file.size > maxSize) {
-      setSnackbar({
-        open: true,
-        message: "Image size should be less than 5MB",
-        severity: "error",
-      });
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setUploadProgress(0);
-      
-      // Create a reference to the storage location
-      const storageRef = ref(storage, `profile-pictures/${user.uid}`);
-      
-      // Upload the file
-      const uploadTask = uploadBytes(storageRef, file);
-      
-      // Track upload progress
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
-        },
-        (error) => {
-          console.error("Upload error:", error);
-          setSnackbar({
-            open: true,
-            message: "Upload failed. Please try again.",
-            severity: "error",
-          });
-        },
-        async () => {
-          // Get the download URL after successful upload
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          
-          // Update user profile in Firestore
-          const userDocRef = doc(db, "users", user.uid);
-          await updateDoc(userDocRef, {
-            profilePic: downloadURL,
-            updatedAt: new Date().toISOString(),
-          });
-          
-          // Update local state
-          updateUserProfile({ 
-            ...user, 
-            profilePic: downloadURL,
-            updatedAt: new Date().toISOString(),
-          });
-          
-          setSnackbar({
-            open: true,
-            message: "Profile picture updated successfully!",
-            severity: "success",
-          });
-        }
-      );
-    } catch (error) {
-      console.error("Error uploading profile picture:", error);
-      setSnackbar({
-        open: true,
-        message: "Failed to update profile picture",
-        severity: "error",
-      });
-    } finally {
-      setLoading(false);
-      setUploadProgress(0);
-    }
   };
 
   if (!user) {
@@ -232,61 +138,19 @@ const ProfilePage = () => {
                 }}
               >
                 <Stack direction="column" alignItems="center">
-                  {loading ? (
-                    <Box sx={{ position: 'relative', display: 'inline-flex', m: 2 }}>
-                      <Avatar
-                        sx={{
-                          width: 100,
-                          height: 100,
-                          bgcolor: "secondary.main",
-                          fontSize: "2.5rem",
-                        }}
-                      >
-                        {user.name?.charAt(0)?.toUpperCase() || "U"}
-                      </Avatar>
-                      <CircularProgress
-                        variant="determinate"
-                        value={uploadProgress}
-                        size={110}
-                        thickness={2}
-                        sx={{
-                          position: 'absolute',
-                          top: -5,
-                          left: -5,
-                          color: 'primary.contrastText',
-                        }}
-                      />
-                    </Box>
-                  ) : (
-                    <Avatar
-                      src={user.profilePic || ""}
-                      sx={{
-                        width: 100,
-                        height: 100,
-                        mx: "auto",
-                        mb: 2,
-                        bgcolor: "secondary.main",
-                        fontSize: "2.5rem",
-                      }}
-                    >
-                      {user.name?.charAt(0)?.toUpperCase() || "U"}
-                    </Avatar>
-                  )}
-                  <IconButton
-                    color="inherit"
-                    component="label"
-                    sx={{ position: "absolute", top: 10, right: 10 }}
-                    disabled={loading}
+                  <Avatar
+                    src={user.profilePic || ""}
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      mx: "auto",
+                      mb: 2,
+                      bgcolor: "secondary.main",
+                      fontSize: "2.5rem",
+                    }}
                   >
-                    <AddPhotoAlternate />
-                    <input
-                      type="file"
-                      hidden
-                      accept="image/*"
-                      onChange={handleProfilePicChange}
-                      disabled={loading}
-                    />
-                  </IconButton>
+                    {user.name?.charAt(0)?.toUpperCase() || "U"}
+                  </Avatar>
                 </Stack>
                 <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
                   {user.name || "Unknown User"}
