@@ -31,11 +31,11 @@ const EditProfilePage = () => {
   const { user, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: user.name || "",
-    email: user.email || "",
-    phone: user.phone || "",
-    address: user.address || "",
-    profilePic: user.profilePic || "",
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    address: user?.address || "",
+    profilePic: user?.profilePic || "",
   });
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
@@ -57,7 +57,7 @@ const EditProfilePage = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: "Failed to update profile",
+        message: error.message || "Failed to update profile",
         severity: "error",
       });
     } finally {
@@ -72,13 +72,31 @@ const EditProfilePage = () => {
 
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({ ...formData, profilePic: reader.result });
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (!file.type.match('image.*')) {
+      setSnackbar({
+        open: true,
+        message: "Please select an image file",
+        severity: "error",
+      });
+      return;
     }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setSnackbar({
+        open: true,
+        message: "Image size should be less than 2MB",
+        severity: "error",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData({ ...formData, profilePic: reader.result });
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -102,7 +120,6 @@ const EditProfilePage = () => {
         <Grid item xs={12} md={8} lg={6}>
           <Card elevation={3}>
             <CardContent sx={{ p: 0 }}>
-              {/* Profile Header */}
               <Box
                 sx={{
                   bgcolor: "primary.main",
@@ -126,7 +143,7 @@ const EditProfilePage = () => {
                   >
                     {formData.name.charAt(0)?.toUpperCase() || "U"}
                   </Avatar>
-                  <IconButton
+                  {/* <IconButton
                     color="inherit"
                     component="label"
                     sx={{ 
@@ -146,14 +163,13 @@ const EditProfilePage = () => {
                       accept="image/*"
                       onChange={handleProfilePicChange}
                     />
-                  </IconButton>
+                  </IconButton> */}
                 </Box>
                 <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
                   Edit Your Profile
                 </Typography>
               </Box>
 
-              {/* Editable Profile Fields */}
               <Box sx={{ p: 3 }}>
                 <Typography
                   variant="h6"
@@ -174,6 +190,7 @@ const EditProfilePage = () => {
                       value={formData.name}
                       onChange={handleChange}
                       fullWidth
+                      required
                     />
                   </Grid>
                 </Grid>
@@ -244,6 +261,7 @@ const EditProfilePage = () => {
                     startIcon={<Cancel />}
                     onClick={() => navigate("/profile")}
                     sx={{ flex: 1 }}
+                    disabled={loading}
                   >
                     Cancel
                   </Button>
