@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"; // Corrected import
 import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Divider, Typography, Alert, Box } from "@mui/material";
 import { FiUser, FiMail, FiHome, FiPhone } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 import emailjs from "@emailjs/browser";
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import { db } from "../../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const CheckoutForm = () => {
   const navigate = useNavigate();
   const { cart, clearCart } = useCart();
+  const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -53,9 +58,12 @@ const CheckoutForm = () => {
     if (cart.length === 0) {
       throw new Error("Cart is empty, cannot send email.");
     }
-    const orderId = Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
+    if (!user) {
+      throw new Error("No user logged in, cannot process order.");
+    }
+    const orderId = `#${Math.floor(Math.random() * 1000000).toString().padStart(6, "0")}`;
     const orders = cart.map((item) => ({
-      name: item.name || "Unknown Item", // Fallback if name is undefined
+      name: item.name || "Unknown Item",
       qty: item.quantity || 1,
       units: "units",
       price: `₹${((item.price || 0) * (item.quantity || 1)).toFixed(2)}`,
@@ -69,18 +77,30 @@ const CheckoutForm = () => {
       to_email: formData.email,
     };
     console.log("Template Params:", JSON.stringify(templateParams, null, 2));
+
     try {
-      const response = await emailjs.send(
+      const emailResponse = await emailjs.send(
         "service_megamart",
         "template_0liiubs",
         templateParams,
         "59Sg07zD-RFRGHdm0"
       );
-      console.log("Confirmation email sent:", response.status, response.text);
+      console.log("Confirmation email sent:", emailResponse.status, emailResponse.text);
+
+      // Save order to Firestore with detailed items
+      await addDoc(collection(db, `users/${user.uid}/orders`), {
+        orderId,
+        date: serverTimestamp(),
+        items: orders.map((item) => ({ name: item.name, price: item.price.replace("₹", "") })), // Save name and price (as numeric string)
+        total: `₹${totalWithTax}`,
+        userEmail: formData.email,
+        shippingAddress: formData.address,
+      });
+
       return orderId;
     } catch (error) {
-      console.error("Email sending failed:", error);
-      throw new Error(`Failed to send confirmation email: ${error.message || error.text}`);
+      console.error("Email or order save failed:", error);
+      throw new Error(`Failed to send confirmation email or save order: ${error.message || error.text}`);
     }
   };
 
@@ -97,7 +117,7 @@ const CheckoutForm = () => {
       clearCart();
       navigate("/order-confirmation", { state: { orderId } });
     } catch (error) {
-      setSubmissionStatus(`Failed to send confirmation email. Please try again. (${error.message})`);
+      setSubmissionStatus(`Failed to process order. Please try again. (${error.message})`);
     } finally {
       setIsSubmitting(false);
     }
@@ -177,7 +197,7 @@ const CheckoutForm = () => {
               error={!!errors.phone}
               helperText={errors.phone}
               inputProps={{ maxLength: 10 }}
-              sx={{ mb: 3}}
+              sx={{ mb: 3 }}
               InputProps={{
                 startAdornment: <FiPhone style={{ marginRight: 10, color: "#666" }} />,
               }}
