@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { motion } from "framer-motion"; // Corrected import
+import { useState, useContext } from "react";
+import { motion } from "framer-motion";
 import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Divider, Typography, Alert, Box } from "@mui/material";
 import { FiUser, FiMail, FiHome, FiPhone } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
 import emailjs from "@emailjs/browser";
-import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { db } from "../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -87,12 +86,17 @@ const CheckoutForm = () => {
       );
       console.log("Confirmation email sent:", emailResponse.status, emailResponse.text);
 
-      // Save order to Firestore with detailed items
-      await addDoc(collection(db, `users/${user.uid}/orders`), {
+      // Save order to top-level orders collection, including quantity
+      await addDoc(collection(db, "orders"), {
         orderId,
         date: serverTimestamp(),
-        items: orders.map((item) => ({ name: item.name, price: item.price.replace("₹", "") })), // Save name and price (as numeric string)
+        items: cart.map((item) => ({
+          name: item.name || "Unknown Item",
+          price: item.price ? `₹${item.price.toFixed(2)}` : "₹0.00",
+          quantity: item.quantity || 1, // Include quantity
+        })),
         total: `₹${totalWithTax}`,
+        userId: user.uid,
         userEmail: formData.email,
         shippingAddress: formData.address,
       });
