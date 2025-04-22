@@ -250,46 +250,42 @@ const OrdersPage = () => {
                       <Stack direction="row" alignItems="center" spacing={1}>
                         <LocalOffer color="action" fontSize={isMobile ? "small" : "medium"} />
                         <Typography variant="body2" color="text.secondary">
-                          {formatCurrency(order.total)}
+                          Total (including 18% tax): {formatCurrency(order.total)}
                         </Typography>
                       </Stack>
                     </Grid>
                   </Grid>
 
-                  {!isMobile && (
-                    <>
-                      <Typography variant="subtitle2" sx={{ mt: 1, mb: 1 }}>
-                        Items Ordered:
+                  <Typography variant="subtitle2" sx={{ mt: 1, mb: 1 }}>
+                    Items Ordered:
+                  </Typography>
+                  <List dense sx={{ py: 0 }}>
+                    {order.items.map((item, index) => (
+                      <ListItem key={index} sx={{ px: 0 }}>
+                        <ListItemAvatar>
+                          <Avatar sx={{ 
+                            bgcolor: "grey.200", 
+                            width: isMobile ? 24 : 32, 
+                            height: isMobile ? 24 : 32 
+                          }}>
+                            <Store fontSize={isMobile ? "small" : "medium"} color="action" />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText 
+                          primary={`${item.name} - ${formatCurrency(item.price)}`}
+                          primaryTypographyProps={{
+                            variant: isMobile ? "body2" : "body1",
+                            noWrap: isMobile
+                          }}
+                        />
+                      </ListItem>
+                    ))}
+                    {order.items.length > 3 && (
+                      <Typography variant="body2" color="text.secondary" sx={{ ml: 7 }}>
+                        +{order.items.length - 3} more items
                       </Typography>
-                      
-                      <List dense sx={{ py: 0 }}>
-                        {order.items.map((item, index) => (
-                          <ListItem key={index} sx={{ px: 0 }}>
-                            <ListItemAvatar>
-                              <Avatar sx={{ 
-                                bgcolor: "grey.200", 
-                                width: isMobile ? 24 : 32, 
-                                height: isMobile ? 24 : 32 
-                              }}>
-                                <Store fontSize={isMobile ? "small" : "medium"} color="action" />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText 
-                              primary={`${item.name} - ${formatCurrency(item.price)}`} // Display item name and price
-                              primaryTypographyProps={{
-                                variant: isMobile ? "body2" : "body1"
-                              }}
-                            />
-                          </ListItem>
-                        ))}
-                        {order.items.length > 3 && (
-                          <Typography variant="body2" color="text.secondary" sx={{ ml: 7 }}>
-                            +{order.items.length - 3} more items
-                          </Typography>
-                        )}
-                      </List>
-                    </>
-                  )}
+                    )}
+                  </List>
                 </Box>
               </Paper>
             </Grid>
