@@ -5,6 +5,7 @@ import {
   Edit,
   Menu,
   Close,
+  Assignment,
   ShoppingCart,
   AccountCircle,
   GetApp,
@@ -157,7 +158,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               )}
             </NavLink>
 
-            {/* Wishlist Icon with Badge */}
             <NavLink to="/wishlist" className="relative cursor-pointer">
               <Favorite
                 className="text-black hover:text-red-500"
@@ -170,100 +170,110 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               )}
             </NavLink>
 
-            {/* Profile Dropdown */}
             <div className="relative" ref={profileRef}>
-  <button
-    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-    className="flex items-center text-black hover:text-blue-500 cursor-pointer"
-  >
-    <AccountCircle fontSize="large" className="text-gray-700 hover:text-blue-600 transition-colors" />
-    {user && (
-      <span className="ml-1 text-sm font-medium hidden md:inline">
-        {user.name?.split(" ")[0] || "Account"}
-      </span>
-    )}
-  </button>
-
-  {profileDropdownOpen && (
-    <div className="absolute right-0 mt-2 w-64 bg-white shadow-xl rounded-lg py-2 z-50 border border-gray-100">
-      {user ? (
-        <>
-          <div className="px-4 py-3 border-b border-gray-100">
-            <div className="flex items-center">
-              <Avatar 
-                src={user.profilePic} 
-                className="w-10 h-10 mr-3"
-                sx={{ bgcolor: '#6366f1' }}
+              <button
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                className="flex items-center text-black hover:text-blue-500 cursor-pointer"
               >
-                {user.name?.charAt(0) || "U"}
-              </Avatar>
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  {user.name || "User"}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {user.email}
-                </p>
-              </div>
+                <AccountCircle fontSize="large" className="text-gray-700 hover:text-blue-600 transition-colors" />
+                {user && (
+                  <span className="ml-1 text-sm font-medium hidden md:inline">
+                    {user.name?.split(" ")[0] || "Account"}
+                  </span>
+                )}
+              </button>
+
+              {profileDropdownOpen && (
+                <div className="absolute right-0 mt-2 min-w-50 bg-white shadow-xl rounded-lg py-2 z-50 border border-gray-100">
+                  {user ? (
+                    <>
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <div className="flex items-center">
+                          <Avatar
+                            src={user.profilePic}
+                            className="w-10 h-10 mr-3"
+                            sx={{ bgcolor: '#6366f1' }}
+                          >
+                            {user.name?.charAt(0) || "U"}
+                          </Avatar>
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900">
+                              {user.name || "User"}
+                            </p>
+                            <p className="text-xs text-gray-500 truncate">
+                              {user.email}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="py-1">
+                        {user.email === "owner@gmail.com" && (
+                          <NavLink
+                            to="/owner-dashboard"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                          >
+                            
+                            <Assignment className="mr-3 text-gray-400" fontSize="small" />
+                            Dashboard
+                          </NavLink>
+                        )}
+                        <NavLink
+                          to="/profile"
+                          onClick={() => setProfileDropdownOpen(false)}
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        >
+                          <Person className="mr-3 text-gray-400" fontSize="small" />
+                          View Profile
+                        </NavLink>
+                        <NavLink
+                          to="/profile/editprofilepage"
+                          onClick={() => setProfileDropdownOpen(false)}
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        >
+                          <Edit className="mr-3 text-gray-400" fontSize="small" />
+                          Edit Profile
+                        </NavLink>
+                        <NavLink
+                          to="/profile/orders"
+                          onClick={() => setProfileDropdownOpen(false)}
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        >
+                          <ShoppingCart className="mr-3 text-gray-400" fontSize="small" />
+                          My Orders
+                        </NavLink>
+                      </div>
+
+                      <div className="py-1 border-t border-gray-100">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          <ExitToApp className="mr-3 text-red-400" fontSize="small" />
+                          Logout
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="px-4 py-3">
+                      <p className="text-sm font-medium text-gray-900 mb-1">Welcome to MegaMart</p>
+                      <p className="text-xs text-gray-500 mb-3">
+                        Sign in to access your account and manage orders
+                      </p>
+                      <NavLink
+                        to="/account"
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-md hover:shadow-md transition-all"
+                      >
+                        <FiLogIn className="mr-2" />
+                        LOGIN / SIGNUP
+                      </NavLink>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-          </div>
-
-          <div className="py-1">
-            <NavLink
-              to="/profilepage"
-              onClick={() => setProfileDropdownOpen(false)}
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-            >
-              <Person className="mr-3 text-gray-400" fontSize="small" />
-              View Profile
-            </NavLink>
-            <NavLink
-              to="/profile/editprofilepage"
-              onClick={() => setProfileDropdownOpen(false)}
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-            >
-              <Edit className="mr-3 text-gray-400" fontSize="small" />
-              Edit Profile
-            </NavLink>
-            <NavLink
-              to="/profile/orders"
-              onClick={() => setProfileDropdownOpen(false)}
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-            >
-              <ShoppingCart className="mr-3 text-gray-400" fontSize="small" />
-              My Orders
-            </NavLink>
-          </div>
-
-          <div className="py-1 border-t border-gray-100">
-            <button
-              onClick={handleLogout}
-              className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-            >
-              <ExitToApp className="mr-3 text-red-400" fontSize="small" />
-              Logout
-            </button>
-          </div>
-        </>
-      ) : (
-        <div className="px-4 py-3">
-          <p className="text-sm font-medium text-gray-900 mb-1">Welcome to MegaMart</p>
-          <p className="text-xs text-gray-500 mb-3">
-            Sign in to access your account and manage orders
-          </p>
-          <NavLink
-            to="/account"
-            onClick={() => setProfileDropdownOpen(false)}
-            className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-md hover:shadow-md transition-all"
-          >
-            <FiLogIn className="mr-2" />
-            LOGIN / SIGNUP
-          </NavLink>
-        </div>
-      )}
-    </div>
-  )}
-</div>
           </div>
 
           <div className="md:hidden">
@@ -276,11 +286,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <div
-          className={`md:hidden bg-white transition-all duration-300 ease-in-out ${
-            menuOpen ? "max-h-96 opacity-100 py-2" : "max-h-0 opacity-0"
-          } overflow-hidden`}
+          className={`md:hidden bg-white transition-all duration-300 ease-in-out ${menuOpen ? "max-h-96 opacity-100 py-2" : "max-h-0 opacity-0"
+            } overflow-hidden`}
         >
           <div className="flex flex-col items-center p-4 space-y-5 font-semibold">
             <NavLink
@@ -335,6 +343,28 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             </NavLink>
             {user && (
               <>
+                {/* <NavLink
+                  to="/profile"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-blue-500 border-b-2 border-blue-500"
+                      : "text-black hover:text-blue-500"
+                  }
+                >
+                  Profile
+                </NavLink>
+                {user.email === "owner@gmail.com" && (
+                  <NavLink
+                    to="/owner-dashboard"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-black hover:text-blue-500"
+                    }
+                  >
+                    Dashboard
+                  </NavLink>
+                )} */}
                 <button
                   onClick={handleLogout}
                   className="flex items-center justify-center text-black hover:text-blue-500"
