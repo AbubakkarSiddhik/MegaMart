@@ -30,7 +30,7 @@ import {
   LocalShipping,
   Refresh
 } from "@mui/icons-material";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Timestamp } from "firebase/firestore";
 
@@ -52,8 +52,9 @@ const OrdersPage = () => {
       }
 
       try {
-        const ordersCollection = collection(db, `users/${user.uid}/orders`);
-        const querySnapshot = await getDocs(ordersCollection);
+        const ordersCollection = collection(db, "orders");
+        const q = query(ordersCollection, where("userEmail", "==", user.email));
+        const querySnapshot = await getDocs(q);
         const ordersData = querySnapshot.docs.map((doc) => {
           const data = doc.data();
           const date = data.date instanceof Timestamp ? data.date.toDate() : null;
@@ -63,13 +64,13 @@ const OrdersPage = () => {
             date,
             items: Array.isArray(data.items) ? data.items.map(item => ({
               name: item.name || "Unknown Item",
-              price: item.price ? `₹${item.price}` : "₹0.00" // Use saved price or default
-            })) : [{ name: "Unknown Item", price: "₹0.00" }],
+              price: item.price ? `₹${item.price}` : "₹0.00",
+              quantity: item.quantity || 1 // Include quantity from saved data
+            })) : [{ name: "Unknown Item", price: "₹0.00", quantity: 1 }],
             total: data.total || "₹0.00",
             status: data.status || "Processing"
           };
         });
-        // Sort by date (newest first)
         ordersData.sort((a, b) => (b.date || 0) - (a.date || 0));
         setOrders(ordersData);
       } catch (error) {
@@ -89,9 +90,7 @@ const OrdersPage = () => {
       "Shipped": { color: "info", icon: <LocalShipping /> },
       "Delivered": { color: "success", icon: <CheckCircle /> }
     };
-    
     const statusInfo = statusMap[status] || { color: "default", icon: <HourglassEmpty /> };
-    
     return (
       <Chip
         icon={statusInfo.icon}
@@ -272,7 +271,7 @@ const OrdersPage = () => {
                           </Avatar>
                         </ListItemAvatar>
                         <ListItemText 
-                          primary={`${item.name} - ${formatCurrency(item.price)}`}
+                          primary={`${item.name} - ${item.quantity} x ${formatCurrency(item.price)}`}
                           primaryTypographyProps={{
                             variant: isMobile ? "body2" : "body1",
                             noWrap: isMobile
