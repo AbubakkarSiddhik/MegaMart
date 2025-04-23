@@ -24,9 +24,16 @@ const CheckoutForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState(null);
 
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  const taxAmount = (totalPrice * 0.18).toFixed(2);
-  const totalWithTax = (totalPrice * 1.18).toFixed(2);
+  const totalPrice = cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0);
+  const taxAmount = totalPrice * 0.18;
+  const totalWithTax = totalPrice + taxAmount;
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    }).format(amount);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,18 +68,39 @@ const CheckoutForm = () => {
       throw new Error("No user logged in, cannot process order.");
     }
     const orderId = `#${Math.floor(Math.random() * 1000000).toString().padStart(6, "0")}`;
-    const orders = cart.map((item) => ({
-      name: item.name || "Unknown Item",
-      qty: item.quantity || 1,
-      units: "units",
-      price: `₹${((item.price || 0) * (item.quantity || 1)).toFixed(2)}`,
-    }));
+
+    // Save order to Firestore first
+    const orderData = {
+      orderId,
+      date: serverTimestamp(),
+      items: cart.map((item) => ({
+        name: item.name || "Unknown Item",
+        price: item.price || 0,
+        quantity: item.quantity || 1,
+      })),
+      total: totalWithTax,
+      userId: user.uid,
+      userEmail: formData.email,
+      shippingAddress: formData.address,
+    };
+    const orderRef = await addDoc(collection(db, "orders"), orderData);
+
+    // Format all order items into an HTML string
+    const orderItemsHtml = cart
+      .map((item) => {
+        const quantity = item.quantity || 1;
+        const price = formatCurrency(item.price * quantity);
+        return `<p>${item.name || "Unknown Item"} - QTY: ${quantity} (units) - ${price}</p>`;
+      })
+      .join("");
+
     const templateParams = {
       order_id: orderId,
-      orders: orders,
+      order_items: orderItemsHtml,
+      cost_subtotal: formatCurrency(totalPrice),
       cost_shipping: "₹0.00",
-      cost_tax: `₹${taxAmount}`,
-      cost_total: `₹${totalWithTax}`,
+      cost_tax: formatCurrency(taxAmount),
+      cost_total: formatCurrency(totalWithTax),
       to_email: formData.email,
     };
     console.log("Template Params:", JSON.stringify(templateParams, null, 2));
@@ -86,25 +114,10 @@ const CheckoutForm = () => {
       );
       console.log("Confirmation email sent:", emailResponse.status, emailResponse.text);
 
-      // Save order to top-level orders collection, including quantity
-      await addDoc(collection(db, "orders"), {
-        orderId,
-        date: serverTimestamp(),
-        items: cart.map((item) => ({
-          name: item.name || "Unknown Item",
-          price: item.price ? `₹${item.price.toFixed(2)}` : "₹0.00",
-          quantity: item.quantity || 1, // Include quantity
-        })),
-        total: `₹${totalWithTax}`,
-        userId: user.uid,
-        userEmail: formData.email,
-        shippingAddress: formData.address,
-      });
-
       return orderId;
     } catch (error) {
       console.error("Email or order save failed:", error);
-      throw new Error(`Failed to send confirmation email or save order: ${error.message || error.text}`);
+      throw new Error(`Failed to send confirmation email: ${error.message || error.text}`);
     }
   };
 
@@ -234,7 +247,7 @@ const CheckoutForm = () => {
             <Box sx={{ mb: 3 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                 <Typography>Subtotal:</Typography>
-                <Typography>₹{totalPrice.toFixed(2)}</Typography>
+                <Typography>{formatCurrency(totalPrice)}</Typography>
               </Box>
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                 <Typography>Shipping:</Typography>
@@ -242,13 +255,13 @@ const CheckoutForm = () => {
               </Box>
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                 <Typography>Tax (18%):</Typography>
-                <Typography>₹{taxAmount}</Typography>
+                <Typography>{formatCurrency(taxAmount)}</Typography>
               </Box>
               <Divider sx={{ my: 1 }} />
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography variant="subtitle1" fontWeight="bold">Total:</Typography>
                 <Typography variant="subtitle1" fontWeight="bold" color="primary">
-                  ₹{totalWithTax}
+                  {formatCurrency(totalWithTax)}
                 </Typography>
               </Box>
             </Box>
