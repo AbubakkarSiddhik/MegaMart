@@ -116,6 +116,13 @@ const AdminDashboard = () => {
         };
       });
 
+      // Sort orders by date in descending order (newest first)
+      ordersData.sort((a, b) => {
+        if (!a.date) return 1; // If a.date is null, push it to the bottom
+        if (!b.date) return -1; // If b.date is null, push it to the bottom
+        return b.date.getTime() - a.date.getTime();
+      });
+
       setOrders(ordersData);
       calculateStats(ordersData);
     } catch (error) {
