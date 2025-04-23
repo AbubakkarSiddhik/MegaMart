@@ -55,7 +55,7 @@ import {
   MarkEmailRead,
   Visibility,
 } from "@mui/icons-material";
-import { collection, getDocs, Timestamp, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, Timestamp, doc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
 const AdminDashboard = () => {
@@ -86,6 +86,29 @@ const AdminDashboard = () => {
   });
 
   const OWNER_EMAIL = "owner@gmail.com";
+
+  // Update last viewed timestamp when the owner visits the dashboard
+  useEffect(() => {
+    const updateLastViewedTimestamp = async () => {
+      if (user && user.email === OWNER_EMAIL) {
+        try {
+          const userDocRef = doc(db, "users", OWNER_EMAIL);
+          await setDoc(
+            userDocRef,
+            {
+              email: OWNER_EMAIL,
+              lastViewedTimestamp: Timestamp.now(),
+            },
+            { merge: true }
+          );
+        } catch (error) {
+          console.error("Error updating last viewed timestamp:", error);
+        }
+      }
+    };
+
+    updateLastViewedTimestamp();
+  }, [user]);
 
   useEffect(() => {
     fetchOrders();
@@ -118,8 +141,8 @@ const AdminDashboard = () => {
 
       // Sort orders by date in descending order (newest first)
       ordersData.sort((a, b) => {
-        if (!a.date) return 1; // If a.date is null, push it to the bottom
-        if (!b.date) return -1; // If b.date is null, push it to the bottom
+        if (!a.date) return 1;
+        if (!b.date) return -1;
         return b.date.getTime() - a.date.getTime();
       });
 
@@ -228,7 +251,7 @@ const AdminDashboard = () => {
         status: newStatus,
       });
       showSnackbar(`Order status updated to ${newStatus}`);
-      fetchOrders(); // Refresh the orders list to reflect the change
+      fetchOrders();
     } catch (error) {
       console.error("Error updating order:", error);
       showSnackbar("Failed to update order status", "error");
@@ -245,7 +268,7 @@ const AdminDashboard = () => {
       const orderRef = doc(db, "orders", selectedOrder.id);
       await deleteDoc(orderRef);
       showSnackbar("Order deleted successfully");
-      fetchOrders(); // Refresh the orders list after deletion
+      fetchOrders();
     } catch (error) {
       console.error("Error deleting order:", error);
       showSnackbar("Failed to delete order", "error");
@@ -430,7 +453,6 @@ const AdminDashboard = () => {
         </Box>
       </Box>
 
-      {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
           <Card sx={{ height: "100%", boxShadow: 3 }}>
@@ -593,7 +615,6 @@ const AdminDashboard = () => {
             </TableBody>
           </Table>
 
-          {/* Actions Menu */}
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -634,7 +655,6 @@ const AdminDashboard = () => {
             </MenuItem>
           </Menu>
 
-          {/* Status Update Dialog */}
           <Dialog
             open={openDialog && dialogType === "status"}
             onClose={handleDialogClose}
@@ -693,7 +713,6 @@ const AdminDashboard = () => {
             </DialogActions>
           </Dialog>
 
-          {/* Delete Confirmation Dialog */}
           <Dialog
             open={openDialog && dialogType === "delete"}
             onClose={handleDialogClose}
@@ -748,7 +767,6 @@ const AdminDashboard = () => {
         </TableContainer>
       </Paper>
 
-      {/* Snackbar for notifications */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
