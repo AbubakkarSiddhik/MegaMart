@@ -28,7 +28,9 @@ import {
   CheckCircle,
   HourglassEmpty,
   LocalShipping,
-  Refresh
+  Refresh,
+  ExpandMore,
+  ExpandLess
 } from "@mui/icons-material";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -40,6 +42,7 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedOrders, setExpandedOrders] = useState({}); // Track expanded state per order
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -64,10 +67,10 @@ const OrdersPage = () => {
             date,
             items: Array.isArray(data.items) ? data.items.map(item => ({
               name: item.name || "Unknown Item",
-              price: item.price ? `₹${item.price}` : "₹0.00",
-              quantity: item.quantity || 1 // Include quantity from saved data
-            })) : [{ name: "Unknown Item", price: "₹0.00", quantity: 1 }],
-            total: data.total || "₹0.00",
+              price: item.price ? item.price : 0,
+              quantity: item.quantity || 1
+            })) : [{ name: "Unknown Item", price: 0, quantity: 1 }],
+            total: data.total || 0,
             status: data.status || "Processing"
           };
         });
@@ -120,6 +123,13 @@ const OrdersPage = () => {
       style: 'currency',
       currency: 'INR'
     }).format(numericAmount);
+  };
+
+  const toggleExpand = (orderId) => {
+    setExpandedOrders((prev) => ({
+      ...prev,
+      [orderId]: !prev[orderId]
+    }));
   };
 
   if (loading) {
@@ -209,86 +219,95 @@ const OrdersPage = () => {
 
       {orders.length > 0 ? (
         <Grid container spacing={2}>
-          {orders.map((order) => (
-            <Grid item xs={12} key={order.id}>
-              <Paper 
-                elevation={2} 
-                sx={{ 
-                  borderRadius: 2,
-                  overflow: "hidden",
-                  borderLeft: "4px solid",
-                  borderColor: "primary.main"
-                }}
-              >
-                <Box sx={{ p: isMobile ? 1.5 : 3 }}>
-                  <Stack 
-                    direction={{ xs: "column", sm: "row" }} 
-                    justifyContent="space-between" 
-                    alignItems={{ xs: "flex-start", sm: "center" }}
-                    spacing={1}
-                    sx={{ mb: 2 }}
-                  >
-                    <Typography variant={isMobile ? "subtitle1" : "h6"} fontWeight="bold">
-                      {order.orderId}
-                    </Typography>
-                    {getStatusChip(order.status)}
-                  </Stack>
-
-                  <Divider sx={{ my: isMobile ? 1 : 2 }} />
-
-                  <Grid container spacing={isMobile ? 1 : 2} sx={{ mb: isMobile ? 1 : 2 }}>
-                    <Grid item xs={12} sm={6}>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <CalendarToday color="action" fontSize={isMobile ? "small" : "medium"} />
-                        <Typography variant="body2" color="text.secondary">
-                          {formatDate(order.date)}
-                        </Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <LocalOffer color="action" fontSize={isMobile ? "small" : "medium"} />
-                        <Typography variant="body2" color="text.secondary">
-                          Total (including 18% tax): {formatCurrency(order.total)}
-                        </Typography>
-                      </Stack>
-                    </Grid>
-                  </Grid>
-
-                  <Typography variant="subtitle2" sx={{ mt: 1, mb: 1 }}>
-                    Items Ordered:
-                  </Typography>
-                  <List dense sx={{ py: 0 }}>
-                    {order.items.map((item, index) => (
-                      <ListItem key={index} sx={{ px: 0 }}>
-                        <ListItemAvatar>
-                          <Avatar sx={{ 
-                            bgcolor: "grey.200", 
-                            width: isMobile ? 24 : 32, 
-                            height: isMobile ? 24 : 32 
-                          }}>
-                            <Store fontSize={isMobile ? "small" : "medium"} color="action" />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText 
-                          primary={`${item.name} - ${item.quantity} x ${formatCurrency(item.price)}`}
-                          primaryTypographyProps={{
-                            variant: isMobile ? "body2" : "body1",
-                            noWrap: isMobile
-                          }}
-                        />
-                      </ListItem>
-                    ))}
-                    {order.items.length > 3 && (
-                      <Typography variant="body2" color="text.secondary" sx={{ ml: 7 }}>
-                        +{order.items.length - 3} more items
+          {orders.map((order) => {
+            const isExpanded = expandedOrders[order.id] || false;
+            const displayItems = isExpanded ? order.items : order.items.slice(0, 3);
+            return (
+              <Grid item xs={12} key={order.id}>
+                <Paper 
+                  elevation={2} 
+                  sx={{ 
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    borderLeft: "4px solid",
+                    borderColor: "primary.main"
+                  }}
+                >
+                  <Box sx={{ p: isMobile ? 1.5 : 3 }}>
+                    <Stack 
+                      direction={{ xs: "column", sm: "row" }} 
+                      justifyContent="space-between" 
+                      alignItems={{ xs: "flex-start", sm: "center" }}
+                      spacing={1}
+                      sx={{ mb: 2 }}
+                    >
+                      <Typography variant={isMobile ? "subtitle1" : "h6"} fontWeight="bold">
+                        {order.orderId}
                       </Typography>
-                    )}
-                  </List>
-                </Box>
-              </Paper>
-            </Grid>
-          ))}
+                      {getStatusChip(order.status)}
+                    </Stack>
+
+                    <Divider sx={{ my: isMobile ? 1 : 2 }} />
+
+                    <Grid container spacing={isMobile ? 1 : 2} sx={{ mb: isMobile ? 1 : 2 }}>
+                      <Grid item xs={12} sm={6}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <CalendarToday color="action" fontSize={isMobile ? "small" : "medium"} />
+                          <Typography variant="body2" color="text.secondary">
+                            {formatDate(order.date)}
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <LocalOffer color="action" fontSize={isMobile ? "small" : "medium"} />
+                          <Typography variant="body2" color="text.secondary">
+                            Total (including 18% tax): {formatCurrency(order.total)}
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+
+                    <Typography variant="subtitle2" sx={{ mt: 1, mb: 1 }}>
+                      Items Ordered:
+                    </Typography>
+                    <List dense sx={{ py: 0 }}>
+                      {displayItems.map((item, index) => (
+                        <ListItem key={index} sx={{ px: 0 }}>
+                          <ListItemAvatar>
+                            <Avatar sx={{ 
+                              bgcolor: "grey.200", 
+                              width: isMobile ? 24 : 32, 
+                              height: isMobile ? 24 : 32 
+                            }}>
+                              <Store fontSize={isMobile ? "small" : "medium"} color="action" />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText 
+                            primary={`${item.name} - ${item.quantity} x ${formatCurrency(item.price)}`}
+                            primaryTypographyProps={{
+                              variant: isMobile ? "body2" : "body1",
+                              noWrap: isMobile
+                            }}
+                          />
+                        </ListItem>
+                      ))}
+                      {order.items.length > 3 && (
+                        <Button
+                          onClick={() => toggleExpand(order.id)}
+                          startIcon={isExpanded ? <ExpandLess /> : <ExpandMore />}
+                          size="small"
+                          sx={{ ml: 7, mt: 1 }}
+                        >
+                          {isExpanded ? "Show less" : `+${order.items.length - 3} more items`}
+                        </Button>
+                      )}
+                    </List>
+                  </Box>
+                </Paper>
+              </Grid>
+            );
+          })}
         </Grid>
       ) : (
         <Box
