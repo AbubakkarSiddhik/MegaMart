@@ -55,8 +55,9 @@ import {
   MarkEmailRead,
   Visibility,
 } from "@mui/icons-material";
-import { collection, getDocs, Timestamp, doc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
+import { collection, getDocs, Timestamp, doc, updateDoc, deleteDoc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import emailjs from "@emailjs/browser";
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -86,6 +87,11 @@ const AdminDashboard = () => {
   });
 
   const OWNER_EMAIL = "owner@gmail.com";
+
+  // Initialize EmailJS with your Public Key
+  useEffect(() => {
+    emailjs.init("59Sg07zD-RFRGHdm0"); // Your EmailJS Public Key
+  }, []);
 
   // Update last viewed timestamp when the owner visits the dashboard
   useEffect(() => {
@@ -278,10 +284,59 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleSendConfirmation = () => {
+  const handleSendConfirmation = async () => {
     if (!selectedOrder) return;
-    showSnackbar(`Confirmation email sent to ${selectedOrder.userEmail}`);
-    handleActionClose();
+
+    try {
+      // Validate the recipient email address
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format regex
+      if (!selectedOrder.userEmail || selectedOrder.userEmail === "N/A" || !emailRegex.test(selectedOrder.userEmail)) {
+        showSnackbar(`Cannot send confirmation email: Invalid or missing email address for order ${selectedOrder.orderId}`, "error");
+        return;
+      }
+
+      // Fetch the user's name from the users collection (optional)
+      let userName = "Customer";
+      const userDocRef = doc(db, "users", selectedOrder.userEmail);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        userName = userData.name || userName;
+      }
+
+      // Format the items as a string
+      const itemsString = selectedOrder.items
+        .map((item) => `- ${item.name} (Qty: ${item.quantity})`)
+        .join("\n");
+
+      // Format the order date
+      const orderDate = formatDate(selectedOrder.date);
+
+      // Prepare the email parameters
+      const emailParams = {
+        to_email: selectedOrder.userEmail,
+        userName: userName,
+        orderId: selectedOrder.orderId,
+        status: selectedOrder.status,
+        total: selectedOrder.total,
+        orderDate: orderDate,
+        items: itemsString,
+      };
+
+      // Send the email using EmailJS
+      await emailjs.send(
+        "service_megamart", // Service ID
+        "template_8b1xf2j", // Template ID
+        emailParams
+      );
+
+      showSnackbar(`Confirmation email sent to ${selectedOrder.userEmail}`);
+    } catch (error) {
+      console.error("Error sending confirmation email:", error);
+      showSnackbar("Failed to send confirmation email", "error");
+    } finally {
+      handleActionClose();
+    }
   };
 
   const handlePrintInvoice = () => {
