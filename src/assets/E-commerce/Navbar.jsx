@@ -13,12 +13,14 @@ import {
   ExitToApp,
 } from "@mui/icons-material";
 import { FiLogIn } from "react-icons/fi";
-import { Avatar } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 import { useState, useContext, useEffect, useRef } from "react";
 import { AiFillApple } from "react-icons/ai";
 import { FaGooglePlay } from "react-icons/fa";
 import Logo from "./Logo.png";
 import { AuthContext } from "./AuthContext";
+import { collection, query, where, getDoc, doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
   const { cart, wishlist } = useCart();
@@ -27,7 +29,59 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [appDropdownOpen, setAppDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [newOrdersCount, setNewOrdersCount] = useState(0);
   const profileRef = useRef(null);
+
+  const OWNER_EMAIL = "owner@gmail.com";
+
+  // Fetch the count of new orders for the owner with real-time listener
+  useEffect(() => {
+    let unsubscribe = () => {};
+
+    const fetchNewOrdersCount = async () => {
+      if (!user || user.email !== OWNER_EMAIL) {
+        setNewOrdersCount(0);
+        return;
+      }
+
+      try {
+        // Fetch the owner's last viewed timestamp
+        const userDocRef = doc(db, "users", OWNER_EMAIL);
+        const userDoc = await getDoc(userDocRef);
+        let lastViewedTimestamp = null;
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          lastViewedTimestamp = userData.lastViewedTimestamp;
+        }
+
+        if (!lastViewedTimestamp) {
+          // If no last viewed timestamp, listen to all orders
+          unsubscribe = onSnapshot(collection(db, "orders"), (snapshot) => {
+            setNewOrdersCount(snapshot.size);
+          });
+          return;
+        }
+
+        // Listen for orders newer than the last viewed timestamp
+        const ordersQuery = query(
+          collection(db, "orders"),
+          where("date", ">", lastViewedTimestamp)
+        );
+        unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
+          setNewOrdersCount(snapshot.size);
+        });
+      } catch (error) {
+        console.error("Error fetching new orders count:", error);
+        setNewOrdersCount(0);
+      }
+    };
+
+    fetchNewOrdersCount();
+
+    // Clean up the listener on unmount
+    return () => unsubscribe();
+  }, [user]);
 
   const handleLogout = () => {
     logout();
@@ -208,15 +262,21 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                       </div>
 
                       <div className="py-1">
-                        {user.email === "owner@gmail.com" && (
+                        {user.email === OWNER_EMAIL && (
                           <NavLink
                             to="/owner-dashboard"
                             onClick={() => setProfileDropdownOpen(false)}
                             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                           >
-                            
                             <Assignment className="mr-3 text-gray-400" fontSize="small" />
                             Dashboard
+                            {newOrdersCount > 0 && (
+                              <Badge
+                                badgeContent={newOrdersCount}
+                                color="error"
+                                sx={{ ml: 1 }}
+                              />
+                            )}
                           </NavLink>
                         )}
                         <NavLink
@@ -343,28 +403,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             </NavLink>
             {user && (
               <>
-                {/* <NavLink
-                  to="/profile"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-500 border-b-2 border-blue-500"
-                      : "text-black hover:text-blue-500"
-                  }
-                >
-                  Profile
-                </NavLink>
-                {user.email === "owner@gmail.com" && (
-                  <NavLink
-                    to="/owner-dashboard"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-blue-500 border-b-2 border-blue-500"
-                        : "text-black hover:text-blue-500"
-                    }
-                  >
-                    Dashboard
-                  </NavLink>
-                )} */}
                 <button
                   onClick={handleLogout}
                   className="flex items-center justify-center text-black hover:text-blue-500"
