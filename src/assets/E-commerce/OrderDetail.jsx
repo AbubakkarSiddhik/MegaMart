@@ -30,6 +30,7 @@ import {
   Cancel,
   AccessTime,
   Home,
+  CalendarToday,
 } from "@mui/icons-material";
 
 const OrderDetail = () => {
@@ -58,13 +59,24 @@ const OrderDetail = () => {
             date = new Date();
           }
 
-          const items = Array.isArray(data.items) ? data.items : [];
+          const items = Array.isArray(data.items)
+            ? data.items.map(item => ({
+                name: item.name || "Unknown Item",
+                price: typeof item.price === "string"
+                  ? parseFloat(item.price.replace(/[^\d.]/g, "")) || 0
+                  : item.price || 0,
+                quantity: parseInt(item.quantity) || 1,
+                description: item.description || "",
+              }))
+            : [];
 
           setOrder({
             id: orderSnap.id,
             date,
             items,
-            ...data,
+            userEmail: data.userEmail || "N/A",
+            shippingAddress: data.shippingAddress || "",
+            status: data.status || "Processing",
             orderId: data.orderId || `#${orderSnap.id.substring(0, 8).toUpperCase()}`,
           });
         } else {
@@ -86,6 +98,17 @@ const OrderDetail = () => {
       style: "currency",
       currency: "INR",
     }).format(amount);
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const getStatusChip = (status) => {
@@ -146,8 +169,8 @@ const OrderDetail = () => {
   }
 
   const subtotal = order.items.reduce((sum, item) => {
-    const rawPrice = typeof item.price === "string" ? parseFloat(item.price.replace(/[^\d.]/g, "")) || 0 : item.price || 0;
-    const quantity = parseInt(item.quantity) || 1;
+    const rawPrice = item.price || 0;
+    const quantity = item.quantity || 1;
     return sum + rawPrice * quantity;
   }, 0);
 
@@ -176,7 +199,11 @@ const OrderDetail = () => {
           <Typography variant="h6">Order Summary</Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Email color="primary" sx={{ mr: 1 }} />
-            <Typography><strong>Customer Email:</strong> {order.userEmail || "N/A"}</Typography>
+            <Typography><strong>Customer Email:</strong> {order.userEmail}</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <CalendarToday color="primary" sx={{ mr: 1 }} />
+            <Typography><strong>Order Date:</strong> {formatDate(order.date)}</Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <LocalShipping color="primary" sx={{ mr: 1 }} />
@@ -211,16 +238,14 @@ const OrderDetail = () => {
           </TableHead>
           <TableBody>
             {order.items.map((item, index) => {
-              const rawPrice = typeof item.price === "string"
-                ? parseFloat(item.price.replace(/[^\d.]/g, "")) || 0
-                : item.price || 0;
-              const quantity = parseInt(item.quantity) || 1;
+              const rawPrice = item.price || 0;
+              const quantity = item.quantity || 1;
               const itemTotal = rawPrice * quantity;
 
               return (
                 <TableRow key={index}>
                   <TableCell>
-                    <Typography fontWeight={500}>{item.name || "Unnamed Product"}</Typography>
+                    <Typography fontWeight={500}>{item.name}</Typography>
                     {item.description && (
                       <Typography variant="body2" color="text.secondary">{item.description}</Typography>
                     )}
